@@ -10,15 +10,16 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(true);
   return (
     <>
-      <MainLayout />
+      <MainLayout>
       <Input type="text"  placeholder="Enter Employee ID"/>
       <Input type="text"  placeholder="Enter Employee Name" />
       <Input type="email" placeholder="Enter Company Email"/>
       <Card title="Employee Details" />
       <Button text="Add Employee" />
       <Table headers={["Employee ID","Name","Department"]}
-        data={[["2024005202", "Gnanesh", "IT"],["2024005203", "Rahul", "HR"]]}/>
+        data={[["2024005202", "Gnanesh", "Manager"],["2024002964", "Nanditha", "HR"]]}/>
       <Modal title="Add Employee" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}/>
+        </MainLayout>
     </>
       
   )
