@@ -32,7 +32,7 @@ function Employees() {
     <MainLayout>
       <div className="employees-page">
         <div className="page-header">
-          <h1>Employee Management</h1>
+          <h1>Human Resources</h1>
           <Button
             text="Add Employee"
             onClick={handleAddEmployeeClick}

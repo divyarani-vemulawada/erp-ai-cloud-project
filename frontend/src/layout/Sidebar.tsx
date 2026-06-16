@@ -13,7 +13,7 @@ function Sidebar() {
             <a href="/"><FaHome />Dashboard</a>
           </li>
           <li>
-            <a href="/hr"><MdPeople />HR Module</a>
+            <a href="/hr"><MdPeople />Human Resources</a>
           </li>
           <li>
             <a href="/finance"><FaMoneyBill /> Finance</a>
