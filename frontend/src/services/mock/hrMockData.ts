@@ -1,4 +1,4 @@
-import type { Employee, LeaveRequest, Attendance, Payroll } from '@/types/hr';
+import type { Employee, LeaveRequest, Attendance, Payroll } from '../../types/hr';
 
 // Mock Employees Data
 export const employees: Employee[] = [

@@ -1,4 +1,3 @@
-import { useState } from 'react'
 type ModalProps = {
   title: string;
   isOpen: boolean;
