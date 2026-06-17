@@ -1,7 +1,5 @@
 
-import {
-  Navigate
-} from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import type{ ReactNode } from "react";
 
 interface Props {
@@ -11,18 +9,13 @@ interface Props {
 const PrivateRoute = ({
   children
 }: Props) => {
-  const token =
-    localStorage.getItem(
-      "token"
-    );
+  const token = localStorage.getItem( "token" );
 
   return token
-    ? children
+    ? <> {children} </>
     : (
-      <Navigate
-        to="/login"
-      />
-    );
+      <Navigate to="/"/>
+      );
 };
 
 export default PrivateRoute;

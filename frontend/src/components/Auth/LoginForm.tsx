@@ -1,50 +1,57 @@
-import {
-  useState,
-  useContext
-} from "react";
+import { useState, useContext } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 
 import { loginUser } from "../../services/authService";
+import "./Auth.css";
 
 const LoginForm = () => {
-  const [email, setEmail] =
-    useState("");
+  const navigate = useNavigate();
 
-  const [password, setPassword] =
-    useState("");
+  const auth = useContext(AuthContext);
 
-  const auth =
-    useContext(AuthContext);
-   const navigate = useNavigate(); 
+  const [email, setEmail] = useState("");
 
-  const handleSubmit = async (
-    e: React.FormEvent
-  ) => {
+  const [password, setPassword] = useState("");
+
+  
+    
+
+  const handleSubmit = async ( e: React.FormEvent ) => {
     e.preventDefault();
+   try{
 
-    const response =
-      await loginUser({
+     const response = await loginUser({
         email,
         password
       });
 
-    auth?.login(
+     auth?.login(
       response.user,
       response.token
     );
-
-    alert("Login Success");
-    navigate("/dashboard");
-    
+     alert("Login Success");
+     navigate("/dashboard");
+    }catch(error){
+     alert("login failed");
+    }
+   
   };
 
   return (
+    <div className="auth-container">
+      <div className="auth-card">
+        <h1 className="auth-title">Welcome Back</h1>
+        <p className="auth-subtitle">
+          Login to your ERP account
+        </p>
+       
+       
     <form onSubmit={handleSubmit}>
-      <h2>Login</h2>
-
-      <input
+      <div className="form-group">
+        <label>Email</label>
+         <input
         type="email"
         placeholder="Email"
         value={email}
@@ -54,10 +61,11 @@ const LoginForm = () => {
           )
         }
       />
+      </div>
 
-      <br />
-
-      <input
+      <div className="form-group">
+        <label>Password</label>
+        <input
         type="password"
         placeholder="Password"
         value={password}
@@ -67,13 +75,17 @@ const LoginForm = () => {
           )
         }
       />
+      </div>
 
-      <br />
-
-      <button type="submit">
+      <button  className="auth-btn" type="submit">
         Login
       </button>
     </form>
+    <div className="auth-footer">
+      Don't have an account? <Link to="/register">Register</Link>
+    </div>
+      </div>
+    </div>
   );
 };
 

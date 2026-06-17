@@ -6,8 +6,8 @@ const MFASetup = () => {
       </h2>
 
       <p>
-        QR Code will appear
-        here
+        scan QR Code and 
+        verify OTP
       </p>
 
       <input

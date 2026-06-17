@@ -7,10 +7,7 @@ export const protect = (
   next: NextFunction
 ) => {
 
-  const token =
-    req.headers.authorization?.split(
-      " "
-    )[1];
+  const token = req.headers.authorization?.split( " " )[1];
 
   if (!token) {
     return res.status(401).json({
@@ -38,6 +35,7 @@ export const protect = (
     });
   }
 };
+
 
 export const authorize = (
   ...roles: string[]

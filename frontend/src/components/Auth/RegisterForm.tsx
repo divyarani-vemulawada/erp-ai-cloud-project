@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import {
-  registerUser
-} from "../../services/authService";
+
+import { Link, useNavigate } from "react-router-dom";
+
+import { registerUser } from "../../services/authService";
+
+import "./Auth.css";
 
 const RegisterForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] =
     useState({
       name: "",
@@ -12,7 +15,7 @@ const RegisterForm = () => {
       password: "",
       role: "employee"
     });
-   const navigate = useNavigate();
+   
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement
@@ -20,56 +23,70 @@ const RegisterForm = () => {
   ) => {
     setFormData({
       ...formData,
-      [e.target.name]:
-        e.target.value
+      [e.target.name]: e.target.value
     });
   };
 
-  const handleSubmit = async (
-    e: React.FormEvent
-  ) => {
+  const handleSubmit = async ( e: React.FormEvent ) => {
     e.preventDefault();
+    try{
 
-    await registerUser(
-      formData
-    );
+    await registerUser(formData);
 
     alert(
-      "Registered Successfully"
+      "User Registered Successfully"
     );
-    navigate("/")
+    navigate('/');
+   }catch(error){
+    alert("Registration Failed");
+   } 
   };
 
   return (
+    <div className="auth-container">
+      <div className="auth-card">
+        <h1 className="auth-title">Register Account</h1>
+        <p className="auth-subtitle">Create your ERP account to get started.
+        </p>
+       
+       
     <form onSubmit={handleSubmit}>
-      <h2>Register</h2>
-
+      
+     <div className="form-group">
+      <label> 👤Full Name</label>
       <input
+        type="text"
         name="name"
-        placeholder="Name"
+        placeholder="Enter Full Name"
         onChange={handleChange}
       />
-
-      <br />
-
-      <input
+     </div>
+    
+     <div className="form-group">
+      <label>📧Email</label>
+       <input
+        type="email"
         name="email"
         placeholder="Email"
         onChange={handleChange}
       />
-
-      <br />
-
+     </div>
+     
+     <div className="form-group">
+      <label>🔒Password</label>
       <input
         type="password"
         name="password"
         placeholder="Password"
         onChange={handleChange}
       />
-
-      <br />
-
+     </div>
+      
+      <div className="form-group">
+        <label>Select Role</label>
+        
       <select
+       className="role-select"
         name="role"
         onChange={handleChange}
       >
@@ -93,13 +110,18 @@ const RegisterForm = () => {
           Admin
         </option>
       </select>
+      </div>
 
-      <br />
 
-      <button type="submit">
+      <button className="auth-btn" type="submit">
         Register
       </button>
     </form>
+     <div className="auth-footer">
+       Already have an account? <Link to="/" >Login</Link>
+     </div>
+      </div>
+    </div>
   );
 };
 
