@@ -6,19 +6,31 @@ import Card from '../common/Card';
 
 type EmployeeFormProps = {
   onSubmit: (employeeData: Omit<Employee, 'id'>) => Promise<void>;
+  onCancel: () => void;
   initialData?: Employee;
 };
 
-function EmployeeForm({ onSubmit, initialData }: EmployeeFormProps) {
+const emptyForm = {
+  employeeId: '',
+  fullName: '',
+  email: '',
+  phone: '',
+  department: '',
+  designation: '',
+  joiningDate: '',
+  status: 'Active' as const,
+};
+
+function EmployeeForm({ onSubmit, onCancel, initialData }: EmployeeFormProps) {
   const [formData, setFormData] = useState({
-    employeeId: initialData?.employeeId || '',
-    fullName: initialData?.fullName || '',
-    email: initialData?.email || '',
-    phone: initialData?.phone || '',
-    department: initialData?.department || '',
-    designation: initialData?.designation || '',
-    joiningDate: initialData?.joiningDate || '',
-    status: initialData?.status || 'Active',
+    employeeId: initialData?.employeeId ?? '',
+    fullName: initialData?.fullName ?? '',
+    email: initialData?.email ?? '',
+    phone: initialData?.phone ?? '',
+    department: initialData?.department ?? '',
+    designation: initialData?.designation ?? '',
+    joiningDate: initialData?.joiningDate ?? '',
+    status: initialData?.status ?? 'Active',
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -26,10 +38,7 @@ function EmployeeForm({ onSubmit, initialData }: EmployeeFormProps) {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.currentTarget;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -39,6 +48,7 @@ function EmployeeForm({ onSubmit, initialData }: EmployeeFormProps) {
 
     try {
       await onSubmit(formData as Omit<Employee, 'id'>);
+      setFormData(emptyForm);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -159,6 +169,11 @@ function EmployeeForm({ onSubmit, initialData }: EmployeeFormProps) {
         </div>
 
         <div className="form-actions">
+          <Button
+            text="Cancel"
+            onClick={onCancel}
+            type="button"
+          />
           <Button
             text={isLoading ? 'Saving...' : 'Save Employee'}
             disabled={isLoading}
