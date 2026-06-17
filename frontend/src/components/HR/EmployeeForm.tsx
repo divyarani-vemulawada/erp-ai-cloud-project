@@ -22,6 +22,8 @@ const emptyForm = {
 };
 
 function EmployeeForm({ onSubmit, onCancel, initialData }: EmployeeFormProps) {
+  const isEditMode = Boolean(initialData);
+
   const [formData, setFormData] = useState({
     employeeId: initialData?.employeeId ?? '',
     fullName: initialData?.fullName ?? '',
@@ -48,7 +50,7 @@ function EmployeeForm({ onSubmit, onCancel, initialData }: EmployeeFormProps) {
 
     try {
       await onSubmit(formData as Omit<Employee, 'id'>);
-      setFormData(emptyForm);
+      if (!isEditMode) setFormData(emptyForm);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -56,9 +58,13 @@ function EmployeeForm({ onSubmit, onCancel, initialData }: EmployeeFormProps) {
     }
   };
 
+  const submitLabel = isLoading
+    ? isEditMode ? 'Updating...' : 'Saving...'
+    : isEditMode ? 'Update Employee' : 'Save Employee';
+
   return (
     <div className="employee-form">
-      <Card title={initialData ? 'Edit Employee' : 'Add Employee'} />
+      <Card title={isEditMode ? 'Edit Employee' : 'Add Employee'} />
 
       <form onSubmit={handleSubmit} className="form-container">
         {error && <div className="form-error">{error}</div>}
@@ -169,16 +175,8 @@ function EmployeeForm({ onSubmit, onCancel, initialData }: EmployeeFormProps) {
         </div>
 
         <div className="form-actions">
-          <Button
-            text="Cancel"
-            onClick={onCancel}
-            type="button"
-          />
-          <Button
-            text={isLoading ? 'Saving...' : 'Save Employee'}
-            disabled={isLoading}
-            type="submit"
-          />
+          <Button text="Cancel" onClick={onCancel} type="button" />
+          <Button text={submitLabel} disabled={isLoading} type="submit" />
         </div>
       </form>
     </div>

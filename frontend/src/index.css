@@ -326,15 +326,33 @@ font-size: 20px;
 }
 
 /* Sidebar sub-navigation */
-.nav-group-label{
+.nav-group-toggle{
   display:flex;
   align-items:center;
   gap:14px;
-  color:#94a3b8;
+  width:100%;
+  background:none;
+  border:none;
+  color:#cbd5e1;
   padding:14px;
+  border-radius:12px;
   font-size:20px;
   font-weight:bold;
-  cursor:default;
+  font-family:'Franklin Gothic Medium','Arial Narrow',Arial,sans-serif;
+  cursor:pointer;
+  transition:0.3s;
+  text-align:left;
+}
+.nav-group-toggle:hover{
+  background:#332e98;
+  color:white;
+}
+.nav-group-toggle span{
+  flex:1;
+}
+.nav-arrow{
+  font-size:14px;
+  margin-left:auto;
 }
 .nav-sub{
   list-style:none;
@@ -348,6 +366,30 @@ font-size: 20px;
 .nav-sub a{
   padding:10px 14px;
   font-size:16px;
+}
+
+/* Danger button variant */
+.btn-danger{
+  background:#dc2626;
+}
+.btn-danger:hover{
+  background:#b91c1c;
+  opacity:1;
+}
+.btn-danger:active{
+  background:#7f1d1d;
+}
+
+/* Table action cell */
+.table-actions{
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+.table-actions .btn{
+  padding:8px 14px;
+  font-size:14px;
+  margin:0;
 }
 
 /* Organisation chart */

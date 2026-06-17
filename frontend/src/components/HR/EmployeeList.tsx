@@ -1,35 +1,64 @@
 import type { Employee } from '../../types/hr';
-import Table from '../common/Table';
 import Card from '../common/Card';
+import Button from '../common/Button';
 
 type EmployeeListProps = {
   employees: Employee[];
+  isAdmin?: boolean;
+  onEdit?: (employee: Employee) => void;
+  onDelete?: (id: string) => void;
 };
 
-function EmployeeList({ employees }: EmployeeListProps) {
-  // Transform employee data to table format
-  const tableHeaders = [
-    'Employee ID',
-    'Full Name',
-    'Email',
-    'Department',
-    'Designation',
-    'Status',
-  ];
-
-  const tableData = employees.map((employee) => [
-    employee.employeeId,
-    employee.fullName,
-    employee.email,
-    employee.department,
-    employee.designation,
-    employee.status,
-  ]);
+function EmployeeList({ employees, isAdmin = false, onEdit, onDelete }: EmployeeListProps) {
+  const handleDelete = (employee: Employee) => {
+    if (window.confirm(`Delete ${employee.fullName}? This action cannot be undone.`)) {
+      onDelete?.(employee.id);
+    }
+  };
 
   return (
     <div className="employee-list">
       <Card title="Employee Directory" />
-      <Table headers={tableHeaders} data={tableData} />
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Employee ID</th>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Designation</th>
+            <th>Status</th>
+            {isAdmin && <th>Actions</th>}
+          </tr>
+        </thead>
+        <tbody>
+          {employees.map((employee) => (
+            <tr key={employee.id}>
+              <td>{employee.employeeId}</td>
+              <td>{employee.fullName}</td>
+              <td>{employee.email}</td>
+              <td>{employee.department}</td>
+              <td>{employee.designation}</td>
+              <td>{employee.status}</td>
+              {isAdmin && (
+                <td className="table-actions">
+                  <Button
+                    text="Edit"
+                    onClick={() => onEdit?.(employee)}
+                    type="button"
+                  />
+                  <Button
+                    text="Delete"
+                    onClick={() => handleDelete(employee)}
+                    type="button"
+                    variant="danger"
+                  />
+                </td>
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

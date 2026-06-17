@@ -3,6 +3,7 @@ type ButtonProps = {
   onClick?: () => void;
   disabled?: boolean;
   type?: 'button' | 'submit';
+  variant?: 'primary' | 'danger';
 };
 
 function Button({
@@ -10,10 +11,11 @@ function Button({
   onClick,
   disabled = false,
   type = 'button',
+  variant = 'primary',
 }: ButtonProps) {
   return (
     <button
-      className="btn"
+      className={variant === 'danger' ? 'btn btn-danger' : 'btn'}
       onClick={onClick}
       disabled={disabled}
       type={type}

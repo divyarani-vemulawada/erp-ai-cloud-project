@@ -1,8 +1,15 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaHome, FaMoneyBill, FaChartBar, FaCog, FaUsers, FaCalendarAlt, FaFileAlt, FaDollarSign } from 'react-icons/fa';
+import {
+  FaHome, FaMoneyBill, FaChartBar, FaCog,
+  FaUsers, FaCalendarAlt, FaFileAlt, FaDollarSign,
+  FaChevronRight, FaChevronDown,
+} from 'react-icons/fa';
 import { MdPeople, MdOutlineInventory } from 'react-icons/md';
 
 function Sidebar() {
+  const [hrExpanded, setHrExpanded] = useState(false);
+
   return (
     <div className="sidebar">
       <div className="logo-section">
@@ -14,15 +21,27 @@ function Sidebar() {
           <li>
             <Link to="/"><FaHome /> Dashboard</Link>
           </li>
+
           <li className="nav-group">
-            <span className="nav-group-label"><MdPeople /> Human Resources</span>
-            <ul className="nav-sub">
-              <li><Link to="/employees"><FaUsers /> Employees</Link></li>
-              <li><Link to="/attendance"><FaCalendarAlt /> Attendance</Link></li>
-              <li><Link to="/leave"><FaFileAlt /> Leave</Link></li>
-              <li><Link to="/payroll"><FaDollarSign /> Payroll</Link></li>
-            </ul>
+            <button
+              className="nav-group-toggle"
+              onClick={() => setHrExpanded((prev) => !prev)}
+            >
+              <MdPeople />
+              <span>Human Resources</span>
+              {hrExpanded ? <FaChevronDown className="nav-arrow" /> : <FaChevronRight className="nav-arrow" />}
+            </button>
+
+            {hrExpanded && (
+              <ul className="nav-sub">
+                <li><Link to="/employees"><FaUsers /> Employees</Link></li>
+                <li><Link to="/attendance"><FaCalendarAlt /> Attendance</Link></li>
+                <li><Link to="/leave"><FaFileAlt /> Leave</Link></li>
+                <li><Link to="/payroll"><FaDollarSign /> Payroll</Link></li>
+              </ul>
+            )}
           </li>
+
           <li>
             <Link to="/finance"><FaMoneyBill /> Finance</Link>
           </li>
