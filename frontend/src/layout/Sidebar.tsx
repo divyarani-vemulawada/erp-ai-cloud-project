@@ -1,31 +1,58 @@
-import {FaHome,FaMoneyBill,FaChartBar,FaCog} from "react-icons/fa";
-import {MdPeople,MdOutlineInventory} from "react-icons/md";
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import {
+  FaHome, FaMoneyBill, FaChartBar, FaCog,
+  FaUsers, FaCalendarAlt, FaFileAlt, FaDollarSign,
+  FaChevronRight, FaChevronDown,
+} from 'react-icons/fa';
+import { MdPeople, MdOutlineInventory } from 'react-icons/md';
+
 function Sidebar() {
+  const [hrExpanded, setHrExpanded] = useState(false);
+
   return (
     <div className="sidebar">
       <div className="logo-section">
-        <h2 className="csn"> ERP Cloud AI</h2>
+        <h2 className="csn">ERP Cloud AI</h2>
         <p className="subtitle">Smart Enterprise Suite</p>
       </div>
       <nav>
         <ul>
           <li>
-            <a href="/"><FaHome />Dashboard</a>
+            <Link to="/"><FaHome /> Dashboard</Link>
+          </li>
+
+          <li className="nav-group">
+            <button
+              className="nav-group-toggle"
+              onClick={() => setHrExpanded((prev) => !prev)}
+            >
+              <MdPeople />
+              <span>Human Resources</span>
+              {hrExpanded ? <FaChevronDown className="nav-arrow" /> : <FaChevronRight className="nav-arrow" />}
+            </button>
+
+            {hrExpanded && (
+              <ul className="nav-sub">
+                <li><Link to="/employees"><FaUsers /> Employees</Link></li>
+                <li><Link to="/attendance"><FaCalendarAlt /> Attendance</Link></li>
+                <li><Link to="/leave"><FaFileAlt /> Leave</Link></li>
+                <li><Link to="/payroll"><FaDollarSign /> Payroll</Link></li>
+              </ul>
+            )}
+          </li>
+
+          <li>
+            <Link to="/finance"><FaMoneyBill /> Finance</Link>
           </li>
           <li>
-            <a href="/hr"><MdPeople />HR Module</a>
+            <Link to="/supply-chain"><MdOutlineInventory /> Supply Chain</Link>
           </li>
           <li>
-            <a href="/finance"><FaMoneyBill /> Finance</a>
+            <Link to="/reports"><FaChartBar /> Reports</Link>
           </li>
           <li>
-            <a href="/supply-chain"><MdOutlineInventory />Supply Chain</a>
-          </li>
-          <li>
-            <a href="/reports"><FaChartBar />Reports</a>
-          </li>
-          <li>
-            <a href="/settings"> <FaCog />Settings</a>
+            <Link to="/settings"><FaCog /> Settings</Link>
           </li>
         </ul>
       </nav>

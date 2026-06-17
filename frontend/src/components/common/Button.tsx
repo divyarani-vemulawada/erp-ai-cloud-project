@@ -1,18 +1,28 @@
 type ButtonProps = {
   text: string;
+  onClick?: () => void;
+  disabled?: boolean;
+  type?: 'button' | 'submit';
+  variant?: 'primary' | 'danger';
 };
+
 function Button({
-  text
+  text,
+  onClick,
+  disabled = false,
+  type = 'button',
+  variant = 'primary',
 }: ButtonProps) {
-
-  const onClick = () => {
-    alert("Button clicked");
-  };
-
   return (
-    <button className='btn' onClick={onClick}>
+    <button
+      className={variant === 'danger' ? 'btn btn-danger' : 'btn'}
+      onClick={onClick}
+      disabled={disabled}
+      type={type}
+    >
       {text}
     </button>
   );
 }
+
 export default Button;

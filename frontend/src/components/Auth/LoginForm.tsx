@@ -32,7 +32,7 @@ const LoginForm = () => {
       response.token
     );
      alert("Login Success");
-     navigate("/dashboard");
+     navigate("/employees");
     }catch(error){
      alert("login failed");
     }
