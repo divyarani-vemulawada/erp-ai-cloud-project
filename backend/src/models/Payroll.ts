@@ -36,7 +36,8 @@ const PayrollSchema = new Schema(
     }
   },
   {
-    timestamps: true
+    timestamps: true,
+    toJSON: { virtuals: true }
   }
 );
 
