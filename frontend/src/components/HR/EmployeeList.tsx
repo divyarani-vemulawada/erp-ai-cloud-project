@@ -19,6 +19,7 @@ function EmployeeList({ employees, isAdmin = false, onEdit, onDelete }: Employee
   return (
     <div className="employee-list">
       <Card title="Employee Directory" />
+      <div className="table-wrapper">
       <table className="table">
         <thead>
           <tr>
@@ -59,6 +60,7 @@ function EmployeeList({ employees, isAdmin = false, onEdit, onDelete }: Employee
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

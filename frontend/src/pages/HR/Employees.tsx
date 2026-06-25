@@ -1,22 +1,46 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import MainLayout from '../../layout/Mainlayout';
 import EmployeeList from '../../components/HR/EmployeeList';
 import EmployeeForm from '../../components/HR/EmployeeForm';
 import OrganisationChart from '../../components/HR/OrganisationChart';
 import Button from '../../components/common/Button';
 import type { Employee } from '../../types/hr';
-import { employees as mockEmployees } from '../../services/mock/hrMockData';
+import {
+  getEmployees,
+  createEmployee,
+  updateEmployee,
+  deleteEmployee,
+} from '../../services/hrService';
 
 const currentUserRole = 'admin';
 
 function Employees() {
   const isAdmin = currentUserRole === 'admin';
 
-  const [employees, setEmployees] = useState<Employee[]>(mockEmployees);
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [mode, setMode] = useState<'add' | 'edit' | null>(null);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
 
   const showForm = mode !== null;
+
+  const loadEmployees = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await getEmployees();
+      setEmployees(data);
+    } catch {
+      setError('Failed to load employees. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadEmployees();
+  }, [loadEmployees]);
 
   const handleAddClick = () => {
     setSelectedEmployee(null);
@@ -28,8 +52,13 @@ function Employees() {
     setMode('edit');
   };
 
-  const handleDeleteClick = (id: string) => {
-    setEmployees((prev) => prev.filter((emp) => emp.id !== id));
+  const handleDeleteClick = async (id: string) => {
+    try {
+      await deleteEmployee(id);
+      await loadEmployees();
+    } catch {
+      setError('Failed to delete employee. Please try again.');
+    }
   };
 
   const handleCancel = () => {
@@ -37,20 +66,15 @@ function Employees() {
     setSelectedEmployee(null);
   };
 
+  // Errors thrown here propagate into EmployeeForm's own catch block and
+  // are displayed inline in the form — no extra error handling needed here.
   const handleFormSubmit = async (employeeData: Omit<Employee, 'id'>) => {
     if (mode === 'edit' && selectedEmployee) {
-      setEmployees((prev) =>
-        prev.map((emp) =>
-          emp.id === selectedEmployee.id ? { ...emp, ...employeeData } : emp
-        )
-      );
+      await updateEmployee(selectedEmployee.id, employeeData);
     } else {
-      const newEmployee: Employee = {
-        id: Date.now().toString(),
-        ...employeeData,
-      };
-      setEmployees((prev) => [...prev, newEmployee]);
+      await createEmployee(employeeData);
     }
+    await loadEmployees();
     handleCancel();
   };
 
@@ -64,6 +88,8 @@ function Employees() {
           )}
         </div>
 
+        {error && <div className="page-error">{error}</div>}
+
         {showForm && (
           <div className="form-section">
             <EmployeeForm
@@ -74,19 +100,25 @@ function Employees() {
           </div>
         )}
 
-        <EmployeeList
-          employees={employees}
-          isAdmin={isAdmin}
-          onEdit={handleEditClick}
-          onDelete={handleDeleteClick}
-        />
+        {loading ? (
+          <p className="loading-text">Loading employees...</p>
+        ) : (
+          <>
+            <EmployeeList
+              employees={employees}
+              isAdmin={isAdmin}
+              onEdit={handleEditClick}
+              onDelete={handleDeleteClick}
+            />
 
-        <div className="org-chart-section">
-          <div className="page-header">
-            <h2>Organisation Chart</h2>
-          </div>
-          <OrganisationChart employees={employees} />
-        </div>
+            <div className="org-chart-section">
+              <div className="page-header">
+                <h2>Organisation Chart</h2>
+              </div>
+              <OrganisationChart employees={employees} />
+            </div>
+          </>
+        )}
       </div>
     </MainLayout>
   );

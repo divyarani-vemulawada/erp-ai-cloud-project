@@ -4,17 +4,10 @@ import Attendance from './pages/HR/Attendance';
 import Leave from './pages/HR/Leave';
 import Payroll from './pages/HR/Payroll';
 
-import MainLayout from './layout/Mainlayout'
-import Button from './components/common/Button'
-import Input from './components/common/Input'
-import Card from './components/common/Card'
-import Table from './components/common/Table'
-import Modal from './components/common/Modal'
 import Register from './pages/Register'
 import Login from './pages/Login'
 
 import PrivateRoute from './components/Auth/PrivateRoute'
-import RoleRoute from './components/Auth/RoleRoute'
 
 function App() {
   return (
@@ -25,13 +18,13 @@ function App() {
        <Route path='/' element={<Login/>}/>
        <Route path='/register' element={<Register/>}/>
 
-       <Route path="/employees" element={<Employees />} />
+       <Route path="/employees" element={<PrivateRoute><Employees /></PrivateRoute>} />
       {/* <Route path="/" element={<Navigate to="/employees" replace />} /> */}
       <Route path="/hr" element={<Navigate to="/employees" replace />} />
-      
-      <Route path="/attendance" element={<Attendance />} />
-      <Route path="/leave" element={<Leave />} />
-      <Route path="/payroll" element={<Payroll />} />
+
+      <Route path="/attendance" element={<PrivateRoute><Attendance /></PrivateRoute>} />
+      <Route path="/leave" element={<PrivateRoute><Leave /></PrivateRoute>} />
+      <Route path="/payroll" element={<PrivateRoute><Payroll /></PrivateRoute>} />
 
      </Routes>
      
