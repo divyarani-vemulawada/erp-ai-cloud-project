@@ -4,6 +4,7 @@ import cors from "cors";
 import connectDB from "./config/database";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
+import hrRoutes from "./routes/hrRoutes";
 
 import dns from "dns";
 dns.setServers(["1.1.1.1","8.8.8.8"]);
@@ -22,6 +23,7 @@ app.use("/api/auth", authRoutes);
 
 
 app.use( "/api/users", userRoutes );
+app.use( "/api/hr", hrRoutes );
 
 app.get("/", (req,res)=>{
     res.send("ERP Auth API Running");
