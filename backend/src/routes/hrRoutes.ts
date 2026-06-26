@@ -17,8 +17,30 @@ import {
   removePayroll
 } from "../controllers/hrController";
 import { protect, authorize } from "../middleware/authMiddleware";
+import Employee from "../models/Employee";
 
 const router = express.Router();
+
+// Search route
+router.get("/search", protect, async (req, res) => {
+  try {
+    const { q } = req.query;
+    if (!q) return res.json([]);
+
+    const results = await Employee.find({
+      $or: [
+        { fullName: { $regex: String(q), $options: "i" } },
+        { employeeId: { $regex: String(q), $options: "i" } },
+        { department: { $regex: String(q), $options: "i" } },
+        { designation: { $regex: String(q), $options: "i" } },
+      ]
+    } as any).limit(5);
+
+    res.json(results);
+  } catch (err) {
+    res.status(500).json({ message: "Search failed" });
+  }
+});
 
 // Employee routes
 router.get("/employees", protect, authorize("admin", "hr", "manager"), getEmployees);

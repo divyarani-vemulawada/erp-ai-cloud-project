@@ -19,7 +19,7 @@ function Sidebar() {
       <nav>
         <ul>
           <li>
-            <Link to="/"><FaHome /> Dashboard</Link>
+            <Link to="/dashboard"><FaHome /> Dashboard</Link>
           </li>
 
           <li className="nav-group">
