@@ -41,3 +41,25 @@ export type Payroll = {
   deductions: number;
   netSalary: number;
 };
+
+// Payslip type definition
+export type Payslip = {
+  id: string;
+  employeeId: string;
+  payrollId: string;
+  month: string;
+  year: number;
+  basicSalary: number;
+  allowances: number;
+  deductions: number;
+  netSalary: number;
+  generatedAt: string;
+  status: "Draft" | "Issued" | "Cancelled";
+};
+
+// Organisation hierarchy type definition
+export type OrgDepartment = {
+  name: string;
+  employeeCount: number;
+  employees: Pick<Employee, "employeeId" | "fullName" | "designation" | "department" | "status">[];
+};

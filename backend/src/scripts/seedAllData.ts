@@ -11,6 +11,7 @@ import Employee from "../models/hr/Employee";
 import Attendance from "../models/hr/Attendance";
 import LeaveRequest from "../models/hr/Leave";
 import Payroll from "../models/hr/Payroll";
+import Payslip from "../models/hr/Payslip";
 import FinanceTransaction from "../models/FinanceTransaction";
 import InventoryItem from "../models/InventoryItem";
 import PurchaseOrder from "../models/PurchaseOrder";
@@ -94,18 +95,27 @@ const notifications = [
   { title: "Payroll Configured", message: "June 2026 payroll run initialized successfully in background queue.", type: "system", status: "Read" },
 ];
 
+const PAYSLIP_PERIODS = [
+  { month: "November", year: 2025, status: "Issued" },
+  { month: "December", year: 2025, status: "Issued" },
+  { month: "January",  year: 2026, status: "Issued" },
+  { month: "February", year: 2026, status: "Issued" },
+  { month: "March",    year: 2026, status: "Issued" },
+  { month: "April",    year: 2026, status: "Draft"  },
+];
+
 async function seedAll() {
   console.log("Connecting to MongoDB...");
   await connectDB();
   console.log("Connected successfully!");
 
-  // Clearing collections
   console.log("Clearing existing collections...");
   await Promise.all([
     Employee.deleteMany({}),
     Attendance.deleteMany({}),
     LeaveRequest.deleteMany({}),
     Payroll.deleteMany({}),
+    Payslip.deleteMany({}),
     FinanceTransaction.deleteMany({}),
     InventoryItem.deleteMany({}),
     PurchaseOrder.deleteMany({}),
@@ -114,13 +124,15 @@ async function seedAll() {
   ]);
   console.log("Collections cleared.");
 
-  // Seeding collections
   console.log("Inserting seed data...");
-  await Promise.all([
+
+  // Phase 1: insert everything except payslips in parallel.
+  // Capture the inserted payroll documents so their _ids can be used for payslips.
+  const results = await Promise.all([
     Employee.insertMany(employees),
     Attendance.insertMany(attendance),
     LeaveRequest.insertMany(leaves),
-    Payroll.insertMany(payrolls),
+    Payroll.insertMany(payrolls),           // index 3 — captured below
     FinanceTransaction.insertMany(financeTransactions),
     InventoryItem.insertMany(inventoryItems),
     PurchaseOrder.insertMany(purchaseOrders),
@@ -128,7 +140,28 @@ async function seedAll() {
     Notification.insertMany(notifications),
   ]);
 
-  console.log("Seeding complete!");
+  const insertedPayrolls = results[3];
+
+  // Phase 2: generate one payslip per payroll record for each seeded period.
+  // Each employee gets payslips for the same 6 months, derived from their payroll record.
+  const payslipDocs = insertedPayrolls.flatMap((p: any, employeeIdx: number) =>
+    PAYSLIP_PERIODS.map((period, periodIdx) => ({
+      employeeId: p.employeeId,
+      payrollId:  String(p._id),
+      month:      period.month,
+      year:       period.year,
+      basicSalary: p.basicSalary,
+      allowances:  p.allowances,
+      deductions:  p.deductions,
+      netSalary:   p.netSalary,
+      generatedAt: new Date(period.year, periodIdx + 10, 25), // 25th of each month
+      status:      period.status,
+    }))
+  );
+
+  await Payslip.insertMany(payslipDocs);
+
+  console.log(`Seeding complete! Inserted ${payslipDocs.length} payslips across ${insertedPayrolls.length} employees.`);
   await mongoose.disconnect();
   console.log("Disconnected. Database is now fully populated.");
 }

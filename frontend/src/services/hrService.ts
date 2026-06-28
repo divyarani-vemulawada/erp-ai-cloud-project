@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Employee, LeaveRequest, Attendance, Payroll } from "../types/hr";
+import type { Employee, LeaveRequest, Attendance, Payroll, Payslip, OrgDepartment } from "../types/hr";
 
 const hrApi = axios.create({
   baseURL: "http://localhost:1000/api/hr",
@@ -112,4 +112,46 @@ export const updatePayroll = async (
 
 export const deletePayroll = async (id: string): Promise<void> => {
   await hrApi.delete(`/payroll/${id}`);
+};
+
+// ── Payslips ───────────────────────────────────────────────────────────────
+
+export const getPayslips = async (): Promise<Payslip[]> => {
+  const response = await hrApi.get("/payslips");
+  return response.data;
+};
+
+export const getPayslipById = async (id: string): Promise<Payslip> => {
+  const response = await hrApi.get(`/payslips/${id}`);
+  return response.data;
+};
+
+export const getPayslipsByEmployee = async (employeeId: string): Promise<Payslip[]> => {
+  const response = await hrApi.get(`/payslips/employee/${employeeId}`);
+  return response.data;
+};
+
+export const createPayslip = async (data: {
+  employeeId: string;
+  payrollId: string;
+  month: string;
+  year: number;
+  basicSalary: number;
+  allowances: number;
+  deductions: number;
+  netSalary: number;
+}): Promise<Payslip> => {
+  const response = await hrApi.post("/payslips", data);
+  return response.data.payslip;
+};
+
+export const deletePayslip = async (id: string): Promise<void> => {
+  await hrApi.delete(`/payslips/${id}`);
+};
+
+// ── Organisation ───────────────────────────────────────────────────────────
+
+export const getOrganisationChart = async (): Promise<OrgDepartment[]> => {
+  const response = await hrApi.get("/organisation");
+  return response.data.departments;
 };

@@ -6,10 +6,11 @@ type PayrollDashboardProps = {
   payrollRecords: Payroll[];
   onEdit?: (record: Payroll) => void;
   onDelete?: (id: string) => void;
+  onGeneratePayslip?: (record: Payroll) => void;
 };
 
-function PayrollDashboard({ payrollRecords, onEdit, onDelete }: PayrollDashboardProps) {
-  const hasActions = Boolean(onEdit || onDelete);
+function PayrollDashboard({ payrollRecords, onEdit, onDelete, onGeneratePayslip }: PayrollDashboardProps) {
+  const hasActions = Boolean(onEdit || onDelete || onGeneratePayslip);
 
   const handleDelete = (record: Payroll) => {
     if (window.confirm(`Delete payroll record for Employee ${record.employeeId}? This action cannot be undone.`)) {
@@ -29,7 +30,7 @@ function PayrollDashboard({ payrollRecords, onEdit, onDelete }: PayrollDashboard
             <th>Allowances (₹)</th>
             <th>Deductions (₹)</th>
             <th>Net Salary (₹)</th>
-            {hasActions && <th className="table-actions">Actions</th>}
+            {hasActions && <th className="table-actions payroll-actions-col">Actions</th>}
           </tr>
         </thead>
         <tbody>
@@ -41,8 +42,15 @@ function PayrollDashboard({ payrollRecords, onEdit, onDelete }: PayrollDashboard
               <td>{record.deductions.toLocaleString('en-IN')}</td>
               <td>{record.netSalary.toLocaleString('en-IN')}</td>
               {hasActions && (
-                <td className="table-actions">
+                <td className="table-actions payroll-actions-col">
                   <div className="action-buttons">
+                    {onGeneratePayslip && (
+                      <Button
+                        text="Payslip"
+                        onClick={() => onGeneratePayslip(record)}
+                        type="button"
+                      />
+                    )}
                     {onEdit && (
                       <Button
                         text="Edit"

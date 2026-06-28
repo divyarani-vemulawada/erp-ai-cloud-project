@@ -752,6 +752,11 @@
   border-color: #86efac;
 }
 
+/* Payroll table needs a wider actions column to fit 3 buttons */
+.payroll-actions-col {
+  width: 210px;
+}
+
 /* Card inside list component = title bar */
 .employee-list > .card,
 .attendance-tracker > .card,
