@@ -8,6 +8,12 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import Finance from './pages/Finance';
+import SupplyChain from './pages/SupplyChain';
+import Projects from './pages/Projects';
+import Reports from './pages/Reports';
+import Notifications from './pages/Notifications';
+import Settings from './pages/Settings';
 import PrivateRoute from './components/Auth/PrivateRoute';
 
 function App() {
@@ -23,6 +29,12 @@ function App() {
       <Route path="/attendance" element={<PrivateRoute><Attendance /></PrivateRoute>} />
       <Route path="/leave" element={<PrivateRoute><Leave /></PrivateRoute>} />
       <Route path="/payroll" element={<PrivateRoute><Payroll /></PrivateRoute>} />
+      <Route path="/finance" element={<PrivateRoute><Finance /></PrivateRoute>} />
+      <Route path="/supply-chain" element={<PrivateRoute><SupplyChain /></PrivateRoute>} />
+      <Route path="/projects" element={<PrivateRoute><Projects /></PrivateRoute>} />
+      <Route path="/reports" element={<PrivateRoute><Reports /></PrivateRoute>} />
+      <Route path="/notifications" element={<PrivateRoute><Notifications /></PrivateRoute>} />
+      <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
       <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
 
       <Route path="*" element={<Navigate to="/" replace />} />

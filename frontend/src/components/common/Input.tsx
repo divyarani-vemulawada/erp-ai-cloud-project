@@ -1,5 +1,5 @@
 type InputProps = {
-  type: string;
+  type?: string;
   placeholder: string;
   name?: string;
   value?: string | number;
@@ -9,7 +9,7 @@ type InputProps = {
 };
 
 function Input({
-  type,
+  type = 'text',
   placeholder,
   name,
   value,

@@ -653,6 +653,88 @@
   margin-bottom: 32px;
 }
 
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.metric-grid .card {
+  margin: 0;
+}
+
+.metric-grid strong {
+  color: #081f53;
+  font-size: 24px;
+}
+
+.module-form,
+.module-table {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+
+.module-form > .card,
+.module-table > .card {
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+  border-bottom: 2px solid #e2e8f0;
+  padding: 16px 20px;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #1a2a6c;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.progress-track {
+  width: 150px;
+  height: 10px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  overflow: hidden;
+}
+
+.progress-track span {
+  display: block;
+  height: 100%;
+  min-width: 4px;
+  background: #2563eb;
+}
+
+.settings-toggles {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  color: #374151;
+  font-weight: 600;
+}
+
+.settings-toggles label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.settings-message {
+  color: #166534;
+  background: #f0fdf4;
+  border-color: #86efac;
+}
+
 /* Card inside list component = title bar */
 .employee-list > .card,
 .attendance-tracker > .card,

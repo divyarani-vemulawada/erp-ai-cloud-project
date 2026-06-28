@@ -18,7 +18,7 @@ const Profile = () => {
     setSuccess("");
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.put(
+      await axios.put(
         "http://localhost:1000/api/users/me",
         { name },
         { headers: { Authorization: `Bearer ${token}` } }
