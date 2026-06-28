@@ -24,7 +24,7 @@ function LeaveManagement({ leaveRequests, onApprove, onReject }: LeaveManagement
             <th>End Date</th>
             <th>Reason</th>
             <th>Status</th>
-            {hasActions && <th>Actions</th>}
+            {hasActions && <th className="table-actions">Actions</th>}
           </tr>
         </thead>
         <tbody>
@@ -38,21 +38,23 @@ function LeaveManagement({ leaveRequests, onApprove, onReject }: LeaveManagement
               <td>{req.status}</td>
               {hasActions && (
                 <td className="table-actions">
-                  {req.status === 'Pending' && onApprove && (
-                    <Button
-                      text="Approve"
-                      onClick={() => onApprove(req.id)}
-                      type="button"
-                    />
-                  )}
-                  {req.status === 'Pending' && onReject && (
-                    <Button
-                      text="Reject"
-                      onClick={() => onReject(req.id)}
-                      type="button"
-                      variant="danger"
-                    />
-                  )}
+                  <div className="action-buttons">
+                    {req.status === 'Pending' && onApprove && (
+                      <Button
+                        text="Approve"
+                        onClick={() => onApprove(req.id)}
+                        type="button"
+                      />
+                    )}
+                    {req.status === 'Pending' && onReject && (
+                      <Button
+                        text="Reject"
+                        onClick={() => onReject(req.id)}
+                        type="button"
+                        variant="danger"
+                      />
+                    )}
+                  </div>
                 </td>
               )}
             </tr>

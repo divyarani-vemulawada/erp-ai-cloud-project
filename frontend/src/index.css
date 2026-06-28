@@ -433,6 +433,7 @@
 /* ── Table ─────────────────────────────────────────────────────────── */
 .table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
   margin: 0;
   background: white;
@@ -451,6 +452,8 @@
   padding: 12px 16px;
   border-bottom: 1px solid #e2e8f0;
   vertical-align: middle;
+  overflow: hidden;
+  word-break: break-word;
 }
 
 .table tr:last-child td {
@@ -461,14 +464,28 @@
   background: #f8fafc;
 }
 
-/* ── Table action cell ─────────────────────────────────────────────── */
+/* ── Table action column (th + td) ─────────────────────────────────── */
 .table-actions {
-  display: flex;
-  gap: 8px;
-  align-items: center;
+  width: 170px;
+  text-align: center;
+  vertical-align: middle;
 }
 
-.table-actions .btn {
+/* override left-align inherited from .table th */
+.table th.table-actions {
+  text-align: center;
+}
+
+/* ── Action buttons flex container ─────────────────────────────────── */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.action-buttons .btn {
   padding: 0 14px;
   min-height: 36px;
   font-size: 13px;

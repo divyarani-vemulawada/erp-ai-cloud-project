@@ -32,7 +32,7 @@ function EmployeeList({ employees, isAdmin = false, onEdit, onDelete }: Employee
               <th>Department</th>
               <th>Designation</th>
               <th>Status</th>
-              {isAdmin && <th>Actions</th>}
+              {isAdmin && <th className="table-actions">Actions</th>}
             </tr>
           </thead>
           <tbody>
@@ -67,17 +67,19 @@ function EmployeeList({ employees, isAdmin = false, onEdit, onDelete }: Employee
                 </td>
                 {isAdmin && (
                   <td className="table-actions">
-                    <Button
-                      text="Edit"
-                      onClick={() => onEdit?.(employee)}
-                      type="button"
-                    />
-                    <Button
-                      text="Delete"
-                      onClick={() => handleDelete(employee)}
-                      type="button"
-                      variant="danger"
-                    />
+                    <div className="action-buttons">
+                      <Button
+                        text="Edit"
+                        onClick={() => onEdit?.(employee)}
+                        type="button"
+                      />
+                      <Button
+                        text="Delete"
+                        onClick={() => handleDelete(employee)}
+                        type="button"
+                        variant="danger"
+                      />
+                    </div>
                   </td>
                 )}
               </tr>

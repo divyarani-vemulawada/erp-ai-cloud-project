@@ -29,7 +29,7 @@ function PayrollDashboard({ payrollRecords, onEdit, onDelete }: PayrollDashboard
             <th>Allowances (₹)</th>
             <th>Deductions (₹)</th>
             <th>Net Salary (₹)</th>
-            {hasActions && <th>Actions</th>}
+            {hasActions && <th className="table-actions">Actions</th>}
           </tr>
         </thead>
         <tbody>
@@ -42,21 +42,23 @@ function PayrollDashboard({ payrollRecords, onEdit, onDelete }: PayrollDashboard
               <td>{record.netSalary.toLocaleString('en-IN')}</td>
               {hasActions && (
                 <td className="table-actions">
-                  {onEdit && (
-                    <Button
-                      text="Edit"
-                      onClick={() => onEdit(record)}
-                      type="button"
-                    />
-                  )}
-                  {onDelete && (
-                    <Button
-                      text="Delete"
-                      onClick={() => handleDelete(record)}
-                      type="button"
-                      variant="danger"
-                    />
-                  )}
+                  <div className="action-buttons">
+                    {onEdit && (
+                      <Button
+                        text="Edit"
+                        onClick={() => onEdit(record)}
+                        type="button"
+                      />
+                    )}
+                    {onDelete && (
+                      <Button
+                        text="Delete"
+                        onClick={() => handleDelete(record)}
+                        type="button"
+                        variant="danger"
+                      />
+                    )}
+                  </div>
                 </td>
               )}
             </tr>
