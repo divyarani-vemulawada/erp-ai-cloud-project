@@ -23,7 +23,7 @@ function AttendanceTracker({ attendanceRecords, onCheckIn, onCheckOut }: Attenda
             <th>Check In</th>
             <th>Check Out</th>
             <th>Status</th>
-            {hasActions && <th>Actions</th>}
+            {hasActions && <th className="table-actions">Actions</th>}
           </tr>
         </thead>
         <tbody>
@@ -36,20 +36,22 @@ function AttendanceTracker({ attendanceRecords, onCheckIn, onCheckOut }: Attenda
               <td>{record.status}</td>
               {hasActions && (
                 <td className="table-actions">
-                  {!record.checkIn && onCheckIn && (
-                    <Button
-                      text="Check In"
-                      onClick={() => onCheckIn(record.id)}
-                      type="button"
-                    />
-                  )}
-                  {record.checkIn && !record.checkOut && onCheckOut && (
-                    <Button
-                      text="Check Out"
-                      onClick={() => onCheckOut(record.id)}
-                      type="button"
-                    />
-                  )}
+                  <div className="action-buttons">
+                    {!record.checkIn && onCheckIn && (
+                      <Button
+                        text="Check In"
+                        onClick={() => onCheckIn(record.id)}
+                        type="button"
+                      />
+                    )}
+                    {record.checkIn && !record.checkOut && onCheckOut && (
+                      <Button
+                        text="Check Out"
+                        onClick={() => onCheckOut(record.id)}
+                        type="button"
+                      />
+                    )}
+                  </div>
                 </td>
               )}
             </tr>
