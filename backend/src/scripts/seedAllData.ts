@@ -7,10 +7,10 @@ dns.setServers(["1.1.1.1", "8.8.8.8"]);
 import mongoose from "mongoose";
 import connectDB from "../config/database";
 
-import Employee from "../models/Employee";
-import Attendance from "../models/Attendance";
-import LeaveRequest from "../models/LeaveRequest";
-import Payroll from "../models/Payroll";
+import Employee from "../models/hr/Employee";
+import Attendance from "../models/hr/Attendance";
+import LeaveRequest from "../models/hr/Leave";
+import Payroll from "../models/hr/Payroll";
 import FinanceTransaction from "../models/FinanceTransaction";
 import InventoryItem from "../models/InventoryItem";
 import PurchaseOrder from "../models/PurchaseOrder";

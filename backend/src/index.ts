@@ -4,7 +4,7 @@ import cors from "cors";
 import connectDB from "./config/database";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
-import hrRoutes from "./routes/hrRoutes";
+import hrRoutes from "./routes/hr";
 import financeRoutes from "./routes/financeRoutes";
 import supplyChainRoutes from "./routes/supplyChainRoutes";
 import projectRoutes from "./routes/projectRoutes";
