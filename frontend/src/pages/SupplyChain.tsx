@@ -50,6 +50,16 @@ function SupplyChain() {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.currentTarget;
+
+    if (["stock", "reorderLevel", "unitCost"].includes(name)) {
+      if (value === "") {
+        setFormData((prev) => ({ ...prev, [name]: value }));
+        return;
+      }
+      const num = Number(value);
+      if (num < 0 || num > 1000) return; // block invalid values
+    }
+
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -104,9 +114,9 @@ function SupplyChain() {
                 <div className="form-group"><label>Vendor</label><Input name="vendor" value={formData.vendor} onChange={handleChange} placeholder="Vendor name" /></div>
               </div>
               <div className="form-row">
-                <div className="form-group"><label>Stock</label><Input type="number" name="stock" value={formData.stock} onChange={handleChange} placeholder="100" /></div>
-                <div className="form-group"><label>Reorder Level</label><Input type="number" name="reorderLevel" value={formData.reorderLevel} onChange={handleChange} placeholder="25" /></div>
-                <div className="form-group"><label>Unit Cost</label><Input type="number" name="unitCost" value={formData.unitCost} onChange={handleChange} placeholder="500" /></div>
+                <div className="form-group"><label>Stock</label><Input type="number" name="stock" value={formData.stock} onChange={handleChange} placeholder="100" min={0} max={1000} /></div>
+                <div className="form-group"><label>Reorder Level</label><Input type="number" name="reorderLevel" value={formData.reorderLevel} onChange={handleChange} placeholder="25" min={0} max={1000} /></div>
+                <div className="form-group"><label>Unit Cost</label><Input type="number" name="unitCost" value={formData.unitCost} onChange={handleChange} placeholder="500" min={0} max={1000} /></div>
               </div>
               <div className="form-actions">
                 <Button text="Cancel" onClick={() => setShowForm(false)} />

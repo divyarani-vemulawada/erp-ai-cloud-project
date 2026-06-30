@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+import { useSidebar } from "../context/SidebarContext";
 
 const notifications = [
   { id: 1, text: "New leave request from Arjun Reddy", time: "5 min ago", read: false },
@@ -19,6 +20,7 @@ const messages = [
 function Navbar() {
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
+  const { toggleSidebar } = useSidebar();
 
   const [query, setQuery] = useState("");
   const [allEmployees, setAllEmployees] = useState<any[]>([]);
@@ -99,7 +101,7 @@ function Navbar() {
   return (
     <div className="navbar">
       <div className="nav-left">
-        <FaBars className="menu-icon" />
+        <FaBars className="menu-icon" onClick={toggleSidebar} />
 
         {/* Search */}
         <div className="search-box" ref={searchRef}>

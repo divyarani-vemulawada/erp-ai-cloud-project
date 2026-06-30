@@ -1,17 +1,23 @@
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
-type Props = {children: React.ReactNode;};
-function MainLayout({children}: Props) {
+import { SidebarProvider } from '../context/SidebarContext';
+
+type Props = { children: React.ReactNode };
+
+function MainLayout({ children }: Props) {
   return (
-    <div className="layout">
-      <Sidebar />
-      <div className="main-content">
-        <Navbar />
-        <div className="page-content">
-          {children}
+    <SidebarProvider>
+      <div className="layout">
+        <Sidebar />
+        <div className="main-content">
+          <Navbar />
+          <div className="page-content">
+            {children}
+          </div>
         </div>
       </div>
-    </div>
+    </SidebarProvider>
   );
 }
+
 export default MainLayout;

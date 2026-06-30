@@ -100,6 +100,15 @@ function AttendancePage() {
     }
   };
 
+  const handleStatusChange = async (id: string, status: 'Present' | 'Absent') => {
+    try {
+      await updateAttendance(id, { status });
+      await loadAttendance();
+    } catch {
+      setError('Failed to update status. Please try again.');
+    }
+  };
+
   return (
     <MainLayout>
       <div className="attendance-page">
@@ -200,6 +209,7 @@ function AttendancePage() {
             attendanceRecords={attendanceRecords}
             onCheckIn={handleCheckIn}
             onCheckOut={handleCheckOut}
+            onStatusChange={handleStatusChange}
           />
         )}
       </div>

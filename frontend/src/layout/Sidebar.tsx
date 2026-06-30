@@ -6,9 +6,13 @@ import {
   FaChevronRight, FaChevronDown,
 } from 'react-icons/fa';
 import { MdPeople, MdOutlineInventory } from 'react-icons/md';
+import { useSidebar } from '../context/SidebarContext';
 
 function Sidebar() {
   const [hrExpanded, setHrExpanded] = useState(false);
+  const { isOpen } = useSidebar();
+
+  if (!isOpen) return null;
 
   return (
     <div className="sidebar">
