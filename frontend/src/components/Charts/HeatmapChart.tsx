@@ -30,10 +30,10 @@ export const HeatmapChart: React.FC<HeatmapChartProps> = ({
   const [hoveredCell, setHoveredCell] = useState<{ day: string; hour: string; val: number } | null>(null);
 
   const getBgColor = (val: number) => {
-    if (val < 25) return "rgba(37, 99, 235, 0.1)";
-    if (val < 50) return "rgba(37, 99, 235, 0.35)";
-    if (val < 75) return "rgba(37, 99, 235, 0.6)";
-    return "rgba(37, 99, 235, 0.9)";
+    if (val < 25) return "rgba(99, 102, 241, 0.15)";
+    if (val < 50) return "rgba(99, 102, 241, 0.4)";
+    if (val < 75) return "rgba(99, 102, 241, 0.65)";
+    return "rgba(99, 102, 241, 0.9)";
   };
 
   return (

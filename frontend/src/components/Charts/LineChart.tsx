@@ -24,7 +24,7 @@ export const LineChart: React.FC<LineChartProps> = ({
   xKey,
   yKey,
   yName = "Value",
-  color = "#2563eb",
+  color = "#6366f1",
   height = 300,
 }) => {
   return (

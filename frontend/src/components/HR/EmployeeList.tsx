@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { Employee } from '../../types/hr';
 import Card from '../common/Card';
 import Button from '../common/Button';
@@ -12,12 +13,17 @@ type EmployeeListProps = {
 
 function EmployeeList({ employees, isAdmin = false, onEdit, onDelete }: EmployeeListProps) {
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 5;
 
   const handleDelete = (employee: Employee) => {
     if (window.confirm(`Delete ${employee.fullName}? This action cannot be undone.`)) {
       onDelete?.(employee.id);
     }
   };
+
+  const totalPages = Math.ceil(employees.length / rowsPerPage);
+  const displayedEmployees = employees.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
   return (
     <div className="employee-list">
@@ -36,7 +42,7 @@ function EmployeeList({ employees, isAdmin = false, onEdit, onDelete }: Employee
             </tr>
           </thead>
           <tbody>
-            {employees.map((employee) => (
+            {displayedEmployees.map((employee) => (
               <tr key={employee.id}>
                 <td>{employee.employeeId}</td>
                 <td>
@@ -55,13 +61,7 @@ function EmployeeList({ employees, isAdmin = false, onEdit, onDelete }: Employee
                 <td>{employee.department}</td>
                 <td>{employee.designation}</td>
                 <td>
-                  <span style={{
-                    background: employee.status === "Active" ? "#dcfce7" : "#fee2e2",
-                    color: employee.status === "Active" ? "#16a34a" : "#dc2626",
-                    padding: "2px 10px",
-                    borderRadius: "20px",
-                    fontSize: "12px"
-                  }}>
+                  <span className={`status-pill status-${employee.status.toLowerCase().replace(/\s+/g, '-')}`}>
                     {employee.status}
                   </span>
                 </td>
@@ -87,6 +87,35 @@ function EmployeeList({ employees, isAdmin = false, onEdit, onDelete }: Employee
           </tbody>
         </table>
       </div>
+      {totalPages > 1 && (
+        <div className="pagination-wrapper">
+          <div className="pagination">
+            <button
+              className="pagination-btn"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            >
+              &lt;
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </button>
+            ))}
+            <button
+              className="pagination-btn"
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            >
+              &gt;
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

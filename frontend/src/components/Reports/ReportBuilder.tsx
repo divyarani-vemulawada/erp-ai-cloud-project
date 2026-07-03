@@ -151,7 +151,7 @@ export const ReportBuilder: React.FC = () => {
                     fontSize: "12px",
                     fontWeight: 600,
                     cursor: "pointer",
-                    background: active ? "linear-gradient(135deg, #0a1628, #0d2045)" : "white",
+                    background: active ? "linear-gradient(135deg, #6366f1, #8b5cf6)" : "white",
                     color: active ? "white" : "#475569",
                     transition: "all 0.15s ease",
                   }}

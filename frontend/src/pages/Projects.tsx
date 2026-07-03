@@ -24,6 +24,8 @@ function Projects() {
   const [formData, setFormData] = useState(emptyProject);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 5;
 
   const loadProjects = useCallback(async () => {
     try {
@@ -100,21 +102,59 @@ function Projects() {
         <div className="module-table">
           <Card title="Project Portfolio" />
           {loading ? <p className="loading-text">Loading projects...</p> : (
-            <div className="table-wrapper">
-              <table className="table">
-                <thead><tr><th>Code</th><th>Name</th><th>Owner</th><th>Timeline</th><th>Budget</th><th>Progress</th><th>Status</th></tr></thead>
-                <tbody>
-                  {projects.map((project) => (
-                    <tr key={project.id}>
-                      <td>{project.projectCode}</td><td>{project.name}</td><td>{project.owner}</td><td>{project.startDate} to {project.dueDate}</td>
-                      <td>{project.actualSpend.toLocaleString()} / {project.budget.toLocaleString()}</td>
-                      <td><div className="progress-track"><span style={{ width: `${project.progress}%` }} /></div></td>
-                      <td><span className="status-pill">{project.status}</span></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <>
+              <div className="table-wrapper">
+                <table className="table">
+                  <thead><tr><th>Code</th><th>Name</th><th>Owner</th><th>Timeline</th><th>Budget</th><th>Progress</th><th>Status</th></tr></thead>
+                  <tbody>
+                    {projects.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage).map((project) => (
+                      <tr key={project.id}>
+                        <td>{project.projectCode}</td><td>{project.name}</td><td>{project.owner}</td><td>{project.startDate} to {project.dueDate}</td>
+                        <td>{project.actualSpend.toLocaleString()} / {project.budget.toLocaleString()}</td>
+                        <td><div className="progress-track"><span style={{ width: `${project.progress}%` }} /></div></td>
+                        <td>
+                          <span className={`status-pill status-${project.status.toLowerCase().replace(/\s+/g, '-')}`}>
+                            {project.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {Math.ceil(projects.length / rowsPerPage) > 1 && (
+                <div className="pagination-wrapper">
+                  <div className="pagination">
+                    <button
+                      className="pagination-btn"
+                      disabled={currentPage === 1}
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      type="button"
+                    >
+                      &lt;
+                    </button>
+                    {Array.from({ length: Math.ceil(projects.length / rowsPerPage) }, (_, i) => i + 1).map((page) => (
+                      <button
+                        key={page}
+                        className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
+                        onClick={() => setCurrentPage(page)}
+                        type="button"
+                      >
+                        {page}
+                      </button>
+                    ))}
+                    <button
+                      className="pagination-btn"
+                      disabled={currentPage === Math.ceil(projects.length / rowsPerPage)}
+                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(projects.length / rowsPerPage)))}
+                      type="button"
+                    >
+                      &gt;
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

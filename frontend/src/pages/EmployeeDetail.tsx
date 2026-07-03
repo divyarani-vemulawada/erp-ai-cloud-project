@@ -45,7 +45,7 @@ const EmployeeDetail = () => {
           onClick={() => navigate("/employees")}
           style={{
             background: "none", border: "none", cursor: "pointer",
-            color: "#1a2a6c", fontSize: "14px", marginBottom: "16px",
+            color: "#6366f1", fontSize: "14px", marginBottom: "16px",
             display: "flex", alignItems: "center", gap: "6px",
             fontWeight: 600
           }}
@@ -60,7 +60,7 @@ const EmployeeDetail = () => {
           overflow: "hidden", marginBottom: "24px"
         }}>
           <div style={{
-            background: "linear-gradient(135deg, #081f53, #1a2a6c)",
+            background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
             height: "100px"
           }} />
           <div style={{ padding: "0 24px 24px" }}>
@@ -68,16 +68,16 @@ const EmployeeDetail = () => {
               width: "80px", height: "80px", borderRadius: "50%",
               background: "#e2e8f0", border: "4px solid white",
               marginTop: "-40px", display: "flex", alignItems: "center",
-              justifyContent: "center", fontSize: "28px", color: "#1a2a6c",
+              justifyContent: "center", fontSize: "28px", color: "#6366f1",
               fontWeight: 700
             }}>
               {employee.fullName?.charAt(0)}
             </div>
 
             <div style={{ marginTop: "12px" }}>
-              <h2 style={{ margin: 0, color: "#1a2a6c" }}>{employee.fullName}</h2>
+              <h2 style={{ margin: 0, color: "#4f46e5" }}>{employee.fullName}</h2>
               <span style={{
-                background: "#1a2a6c", color: "white",
+                background: "linear-gradient(135deg, #6366f1, #8b5cf6)", color: "white",
                 padding: "2px 10px", borderRadius: "20px",
                 fontSize: "12px", display: "inline-block", marginTop: "6px"
               }}>
@@ -125,13 +125,13 @@ const EmployeeDetail = () => {
           boxShadow: "0 2px 16px rgba(0,0,0,0.08)",
           padding: "24px", marginBottom: "24px"
         }}>
-          <h3 style={{ color: "#1a2a6c", marginTop: 0 }}>📊 Attendance Summary</h3>
+          <h3 style={{ color: "#4f46e5", marginTop: 0 }}>📊 Attendance Summary</h3>
 
           <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
             {[
               { label: "Present Days", value: presentDays, color: "#16a34a" },
               { label: "Absent Days", value: absentDays, color: "#dc2626" },
-              { label: "Total Days", value: totalDays, color: "#1a2a6c" },
+              { label: "Total Days", value: totalDays, color: "#6366f1" },
               {
                 label: "Attendance %",
                 value: `${attendancePercent}%`,
@@ -158,7 +158,7 @@ const EmployeeDetail = () => {
             <div style={{ marginTop: "20px", overflowX: "auto" }}>
               <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead>
-                  <tr style={{ background: "#081f53", color: "white" }}>
+                  <tr style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)", color: "white" }}>
                     <th style={{ padding: "10px 14px", textAlign: "left" }}>Date</th>
                     <th style={{ padding: "10px 14px", textAlign: "left" }}>Check In</th>
                     <th style={{ padding: "10px 14px", textAlign: "left" }}>Check Out</th>
@@ -198,14 +198,14 @@ const EmployeeDetail = () => {
           boxShadow: "0 2px 16px rgba(0,0,0,0.08)",
           padding: "24px"
         }}>
-          <h3 style={{ color: "#1a2a6c", marginTop: 0 }}>🗓️ Leave History</h3>
+          <h3 style={{ color: "#4f46e5", marginTop: 0 }}>🗓️ Leave History</h3>
           {leave.length === 0 ? (
             <p style={{ color: "#94a3b8" }}>No leave records found.</p>
           ) : (
             <div style={{ overflowX: "auto" }}>
               <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead>
-                  <tr style={{ background: "#081f53", color: "white" }}>
+                  <tr style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)", color: "white" }}>
                     <th style={{ padding: "10px 14px", textAlign: "left" }}>Type</th>
                     <th style={{ padding: "10px 14px", textAlign: "left" }}>Start</th>
                     <th style={{ padding: "10px 14px", textAlign: "left" }}>End</th>

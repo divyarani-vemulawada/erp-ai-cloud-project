@@ -41,7 +41,7 @@ const Profile = () => {
 
   return (
     <div style={{ padding: "24px", maxWidth: "700px" }}>
-      <h1 style={{ color: "#1a2a6c", marginBottom: "24px" }}>My Profile</h1>
+      <h1 style={{ color: "#6366f1", marginBottom: "24px" }}>My Profile</h1>
 
       {success && (
         <div style={{
@@ -71,7 +71,7 @@ const Profile = () => {
 
         {/* Cover + Avatar */}
         <div style={{
-          background: "linear-gradient(135deg, #081f53, #1a2a6c)",
+          background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
           height: "100px", position: "relative"
         }} />
         <div style={{ padding: "0 24px 24px", position: "relative" }}>
@@ -106,11 +106,11 @@ const Profile = () => {
                 </div>
               ) : (
                 <div>
-                  <h2 style={{ margin: 0, color: "#1a2a6c", fontSize: "22px" }}>
+                  <h2 style={{ margin: 0, color: "#4f46e5", fontSize: "22px" }}>
                     {user?.name}
                   </h2>
                   <span style={{
-                    background: "#1a2a6c", color: "white",
+                    background: "linear-gradient(135deg, #6366f1, #8b5cf6)", color: "white",
                     padding: "2px 10px", borderRadius: "20px",
                     fontSize: "12px", textTransform: "capitalize",
                     display: "inline-block", marginTop: "6px"
@@ -160,7 +160,7 @@ const Profile = () => {
                     onClick={handleSave}
                     disabled={loading}
                     style={{
-                      background: "#1a2a6c", color: "white",
+                      background: "linear-gradient(135deg, #6366f1, #8b5cf6)", color: "white",
                       border: "none", borderRadius: "8px",
                       padding: "10px 24px", cursor: "pointer",
                       fontSize: "14px", fontWeight: 600
@@ -184,7 +184,7 @@ const Profile = () => {
                 <button
                   onClick={() => setEditMode(true)}
                   style={{
-                    background: "#1a2a6c", color: "white",
+                    background: "linear-gradient(135deg, #6366f1, #8b5cf6)", color: "white",
                     border: "none", borderRadius: "8px",
                     padding: "10px 24px", cursor: "pointer",
                     fontSize: "14px", fontWeight: 600

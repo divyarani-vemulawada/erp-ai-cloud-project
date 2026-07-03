@@ -22,6 +22,8 @@ function Notifications() {
   const [formData, setFormData] = useState(emptyNotification);
   const [showForm, setShowForm] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 5;
 
   const loadNotifications = useCallback(async () => {
     try {
@@ -86,15 +88,47 @@ function Notifications() {
             <table className="table">
               <thead><tr><th>Title</th><th>Message</th><th>Channel</th><th>Severity</th><th>Status</th><th>Action</th></tr></thead>
               <tbody>
-                {notifications.map((item) => (
+                {notifications.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage).map((item) => (
                   <tr key={item.id}>
-                    <td>{item.title}</td><td>{item.message}</td><td>{item.channel}</td><td>{item.severity}</td><td><span className="status-pill">{item.status}</span></td>
+                    <td>{item.title}</td><td>{item.message}</td><td>{item.channel}</td><td>{item.severity}</td><td><span className={`status-pill status-${item.status.toLowerCase().replace(/\s+/g, '-')}`}>{item.status}</span></td>
                     <td>{item.status === 'Unread' && <Button text="Mark Read" onClick={() => handleRead(item.id)} />}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+          {Math.ceil(notifications.length / rowsPerPage) > 1 && (
+            <div className="pagination-wrapper">
+              <div className="pagination">
+                <button
+                  className="pagination-btn"
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  type="button"
+                >
+                  &lt;
+                </button>
+                {Array.from({ length: Math.ceil(notifications.length / rowsPerPage) }, (_, i) => i + 1).map((page) => (
+                  <button
+                    key={page}
+                    className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
+                    onClick={() => setCurrentPage(page)}
+                    type="button"
+                  >
+                    {page}
+                  </button>
+                ))}
+                <button
+                  className="pagination-btn"
+                  disabled={currentPage === Math.ceil(notifications.length / rowsPerPage)}
+                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(notifications.length / rowsPerPage)))}
+                  type="button"
+                >
+                  &gt;
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </MainLayout>

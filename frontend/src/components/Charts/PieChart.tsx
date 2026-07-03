@@ -14,7 +14,7 @@ interface PieChartProps {
   height?: number;
 }
 
-const DEFAULT_COLORS = ["#16a34a", "#d97706", "#dc2626", "#2563eb", "#8b5cf6"];
+const DEFAULT_COLORS = ["#6366f1", "#8b5cf6", "#a78bfa", "#4f46e5", "#818cf8"];
 
 export const PieChart: React.FC<PieChartProps> = ({
   data,

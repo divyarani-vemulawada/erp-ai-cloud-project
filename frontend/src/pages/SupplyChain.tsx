@@ -29,6 +29,8 @@ function SupplyChain() {
   const [formData, setFormData] = useState(emptyItem);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 5;
 
   const loadSupplyChain = useCallback(async () => {
     try {
@@ -129,19 +131,57 @@ function SupplyChain() {
         <div className="module-table">
           <Card title="Inventory Control" />
           {loading ? <p className="loading-text">Loading inventory...</p> : (
-            <div className="table-wrapper">
-              <table className="table">
-                <thead><tr><th>SKU</th><th>Name</th><th>Warehouse</th><th>Stock</th><th>Reorder</th><th>Vendor</th><th>Status</th></tr></thead>
-                <tbody>
-                  {items.map((item) => (
-                    <tr key={item.id}>
-                      <td>{item.sku}</td><td>{item.name}</td><td>{item.warehouse}</td><td>{item.stock}</td><td>{item.reorderLevel}</td><td>{item.vendor}</td>
-                      <td><span className="status-pill">{item.status}</span></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <>
+              <div className="table-wrapper">
+                <table className="table">
+                  <thead><tr><th>SKU</th><th>Name</th><th>Warehouse</th><th>Stock</th><th>Reorder</th><th>Vendor</th><th>Status</th></tr></thead>
+                  <tbody>
+                    {items.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage).map((item) => (
+                      <tr key={item.id}>
+                        <td>{item.sku}</td><td>{item.name}</td><td>{item.warehouse}</td><td>{item.stock}</td><td>{item.reorderLevel}</td><td>{item.vendor}</td>
+                        <td>
+                          <span className={`status-pill status-${item.status.toLowerCase().replace(/\s+/g, '-')}`}>
+                            {item.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {Math.ceil(items.length / rowsPerPage) > 1 && (
+                <div className="pagination-wrapper">
+                  <div className="pagination">
+                    <button
+                      className="pagination-btn"
+                      disabled={currentPage === 1}
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      type="button"
+                    >
+                      &lt;
+                    </button>
+                    {Array.from({ length: Math.ceil(items.length / rowsPerPage) }, (_, i) => i + 1).map((page) => (
+                      <button
+                        key={page}
+                        className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
+                        onClick={() => setCurrentPage(page)}
+                        type="button"
+                      >
+                        {page}
+                      </button>
+                    ))}
+                    <button
+                      className="pagination-btn"
+                      disabled={currentPage === Math.ceil(items.length / rowsPerPage)}
+                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(items.length / rowsPerPage)))}
+                      type="button"
+                    >
+                      &gt;
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

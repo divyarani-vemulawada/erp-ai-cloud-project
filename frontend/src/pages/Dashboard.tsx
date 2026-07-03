@@ -271,8 +271,8 @@ function Dashboard() {
                       <stop offset="95%" stopColor="#6366f1" stopOpacity={0.05} />
                     </linearGradient>
                     <linearGradient id="colorSpend" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.8} />
-                      <stop offset="95%" stopColor="#f59e0b" stopOpacity={0.05} />
+                      <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.8} />
+                      <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0.05} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
@@ -287,7 +287,7 @@ function Dashboard() {
                   />
                   <Legend />
                   <Area type="monotone" dataKey="progress" name="Progress %" stroke="#6366f1" fillOpacity={1} fill="url(#colorProgress)" />
-                  <Area type="monotone" dataKey="actualSpend" name="Actual Spend (in 10k INR)" stroke="#f59e0b" fillOpacity={1} fill="url(#colorSpend)" />
+                  <Area type="monotone" dataKey="actualSpend" name="Actual Spend (in 10k INR)" stroke="#8b5cf6" fillOpacity={1} fill="url(#colorSpend)" />
                 </AreaChart>
               </ResponsiveContainer>
             </div>

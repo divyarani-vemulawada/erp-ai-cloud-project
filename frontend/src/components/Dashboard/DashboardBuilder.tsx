@@ -122,10 +122,10 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
         </div>
         
         <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-          <button className="btn" style={{ background: "#d97706", gap: "6px", minHeight: "38px" }} onClick={handleResetDefault}>
+          <button className="btn" style={{ background: "#8b5cf6", gap: "6px", minHeight: "38px" }} onClick={handleResetDefault}>
             <FaUndo style={{ marginRight: "4px" }} /> Reset to Default
           </button>
-          <button className="btn" style={{ background: "#0a1628", gap: "6px", minHeight: "38px" }} onClick={() => setShowLibrary(true)}>
+          <button className="btn" style={{ background: "#4f46e5", gap: "6px", minHeight: "38px" }} onClick={() => setShowLibrary(true)}>
             <FaPlus style={{ marginRight: "4px" }} /> Add Widget
           </button>
           <button className="btn" style={{ gap: "6px", minHeight: "38px" }} onClick={() => onSave(layout)}>
@@ -221,7 +221,7 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
                           borderRadius: "6px",
                           border: "1px solid #cbd5e1",
                           cursor: "pointer",
-                          background: widget.size === sz ? "#f59e0b" : "white",
+                          background: widget.size === sz ? "#6366f1" : "white",
                           color: widget.size === sz ? "white" : "#475569",
                           transition: "all 0.15s ease",
                           flex: "1 0 auto",

@@ -28,6 +28,8 @@ function Finance() {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState(emptyForm);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 5;
 
   const loadTransactions = useCallback(async () => {
     try {
@@ -164,24 +166,58 @@ function Finance() {
         <div className="module-table">
           <Card title="Ledger, AP and AR Transactions" />
           {loading ? <p className="loading-text">Loading finance data...</p> : (
-            <div className="table-wrapper">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Reference</th><th>Type</th><th>Account</th><th>Counterparty</th><th>Amount</th><th>Status</th><th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {transactions.map((item) => (
-                    <tr key={item.id}>
-                      <td>{item.reference}</td><td>{item.type}</td><td>{item.account}</td><td>{item.counterparty}</td>
-                      <td>{item.amount.toLocaleString()} {item.currency}</td><td><span className="status-pill">{item.status}</span></td>
-                      <td><Button text="Delete" variant="danger" onClick={() => handleDelete(item.id)} /></td>
+            <>
+              <div className="table-wrapper">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>Reference</th><th>Type</th><th>Account</th><th>Counterparty</th><th>Amount</th><th>Status</th><th>Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {transactions.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage).map((item) => (
+                      <tr key={item.id}>
+                        <td>{item.reference}</td><td>{item.type}</td><td>{item.account}</td><td>{item.counterparty}</td>
+                        <td>{item.amount.toLocaleString()} {item.currency}</td><td><span className={`status-pill status-${item.status.toLowerCase().replace(/\s+/g, '-')}`}>{item.status}</span></td>
+                        <td><Button text="Delete" variant="danger" onClick={() => handleDelete(item.id)} /></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {Math.ceil(transactions.length / rowsPerPage) > 1 && (
+                <div className="pagination-wrapper">
+                  <div className="pagination">
+                    <button
+                      className="pagination-btn"
+                      disabled={currentPage === 1}
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      type="button"
+                    >
+                      &lt;
+                    </button>
+                    {Array.from({ length: Math.ceil(transactions.length / rowsPerPage) }, (_, i) => i + 1).map((page) => (
+                      <button
+                        key={page}
+                        className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
+                        onClick={() => setCurrentPage(page)}
+                        type="button"
+                      >
+                        {page}
+                      </button>
+                    ))}
+                    <button
+                      className="pagination-btn"
+                      disabled={currentPage === Math.ceil(transactions.length / rowsPerPage)}
+                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(transactions.length / rowsPerPage)))}
+                      type="button"
+                    >
+                      &gt;
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
