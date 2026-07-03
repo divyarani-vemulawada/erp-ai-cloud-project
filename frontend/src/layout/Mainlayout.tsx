@@ -1,5 +1,6 @@
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
+import ProfileDrawer from './ProfileDrawer';
 import { SidebarProvider } from '../context/SidebarContext';
 
 type Props = { children: React.ReactNode };
@@ -16,6 +17,7 @@ function MainLayout({ children }: Props) {
           </div>
         </div>
       </div>
+      <ProfileDrawer />
     </SidebarProvider>
   );
 }

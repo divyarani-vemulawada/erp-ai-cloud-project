@@ -11,6 +11,9 @@ import projectRoutes from "./routes/projectRoutes";
 import notificationRoutes from "./routes/notificationRoutes";
 import settingsRoutes from "./routes/settingsRoutes";
 import reportRoutes from "./routes/reportRoutes";
+import dashboardConfigRoutes from "./routes/dashboardConfigRoutes";
+import auditLogRoutes from "./routes/auditLogRoutes";
+import { auditMiddleware } from "./middleware/auditMiddleware";
 
 import dns from "dns";
 dns.setServers(["1.1.1.1","8.8.8.8"]);
@@ -23,6 +26,7 @@ app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+app.use(auditMiddleware);
 
 app.use("/api/auth", authRoutes);
 
@@ -36,6 +40,8 @@ app.use("/api/projects", projectRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/settings", settingsRoutes);
 app.use("/api/reports", reportRoutes);
+app.use("/api/dashboard", dashboardConfigRoutes);
+app.use("/api/audit-logs", auditLogRoutes);
 
 app.get("/", (req,res)=>{
     res.send("ERP Auth API Running");

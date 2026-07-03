@@ -35,7 +35,7 @@ function App() {
       <Route path="/reports" element={<PrivateRoute><Reports /></PrivateRoute>} />
       <Route path="/notifications" element={<PrivateRoute><Notifications /></PrivateRoute>} />
       <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
-      <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+      <Route path="/profile" element={<Navigate to="/dashboard" replace />} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

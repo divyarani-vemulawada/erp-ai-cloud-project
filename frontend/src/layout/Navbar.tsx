@@ -20,7 +20,7 @@ const messages = [
 function Navbar() {
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
-  const { toggleSidebar } = useSidebar();
+  const { toggleSidebar, toggleProfile } = useSidebar();
 
   const [query, setQuery] = useState("");
   const [allEmployees, setAllEmployees] = useState<any[]>([]);
@@ -29,7 +29,6 @@ function Navbar() {
 
   const [showNotifications, setShowNotifications] = useState(false);
   const [showMessages, setShowMessages] = useState(false);
-  const [showProfile, setShowProfile] = useState(false);
 
   const searchRef = useRef<HTMLDivElement>(null);
   const notifRef = useRef<HTMLDivElement>(null);
@@ -81,18 +80,10 @@ function Navbar() {
       if (msgRef.current && !msgRef.current.contains(e.target as Node)) {
         setShowMessages(false);
       }
-      if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
-        setShowProfile(false);
-      }
     };
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
-
-  const handleLogout = () => {
-    auth?.logout();
-    navigate("/");
-  };
 
   const handleSearch = () => {
     if (query.trim().length >= 1) setShowSearch(true);
@@ -191,40 +182,21 @@ function Navbar() {
         </div>
 
         {/* Profile */}
-        <div className="profile" ref={profileRef} onClick={() => {
-          setShowProfile(!showProfile);
-          setShowNotifications(false);
-          setShowMessages(false);
-        }}>
-          <img src="guest.png" alt="profile" className="profile-img" />
+        <div 
+          className="profile" 
+          ref={profileRef} 
+          onClick={() => {
+            toggleProfile();
+            setShowNotifications(false);
+            setShowMessages(false);
+          }}
+          style={{ cursor: "pointer" }}
+        >
+          <img src={`https://api.dicebear.com/7.x/bottts/svg?seed=${user?.name || "Jonas"}`} alt="profile" className="profile-img" />
           <div>
             <h4>{user?.name || "User"}</h4>
             <p>{user?.role || "Admin"}</p>
           </div>
-
-          {showProfile && (
-            <div className="nav-dropdown profile-dropdown">
-              <div className="profile-header">
-                <img src="guest.png" alt="profile" className="profile-header-img" />
-                <div>
-                  <strong>{user?.name || "User"}</strong>
-                  <p>{user?.email || ""}</p>
-                  <span className="role-badge">{user?.role || "Admin"}</span>
-                </div>
-              </div>
-              <hr />
-              <div className="dropdown-item profile-item" onClick={() => navigate("/profile")}>
-                <FaUser /> My Profile
-              </div>
-              <div className="dropdown-item profile-item" onClick={() => navigate("/settings")}>
-                <FaCog /> Settings
-              </div>
-              <hr />
-              <div className="dropdown-item profile-item logout" onClick={handleLogout}>
-                <FaSignOutAlt /> Logout
-              </div>
-            </div>
-          )}
         </div>
 
       </div>
