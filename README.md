@@ -627,11 +627,4 @@ This script inserts the following records:
 - **Docker Compose** — containerise the backend and MongoDB for one-command local setup
 - **Advanced RBAC** — field-level or resource-level permissions beyond the current role categories
 
----
 
-## Contributors
-
-| Name | Role |
-|---|---|
-| Matta Jaswanth Manikanta Babu | Full-Stack Developer |
-| Sai Tharun Kishore | Full-Stack Developer |
