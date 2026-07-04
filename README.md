@@ -28,7 +28,7 @@ A full-stack cloud ERP (Enterprise Resource Planning) system with role-based acc
 - [Seed Data](#seed-data)
 - [Screenshots](#screenshots)
 - [Future Improvements](#future-improvements)
-- [Contributors](#contributors)
+
 
 ---
 
