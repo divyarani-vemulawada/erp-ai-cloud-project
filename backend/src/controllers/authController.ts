@@ -3,6 +3,20 @@ import { registerUser, loginUser } from "../services/authService";
 import bcrypt from "bcryptjs";
 import User from "../models/User";
 
+// Check if email exists
+export const checkEmail = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+    const user = await User.findOne({ email: email.toLowerCase().trim() });
+    return res.status(200).json({ exists: !!user });
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message || "Server Error" });
+  }
+};
+
 //Register 
 export const register = async (req: Request, res: Response ) => {
 

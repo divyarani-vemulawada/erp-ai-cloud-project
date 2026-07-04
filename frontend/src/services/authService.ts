@@ -15,3 +15,8 @@ export const loginUser = async (data: LoginData) => {
   const response = await axios.post(`${API}/login`,data);
   return response.data
 };
+
+export const checkEmailExists = async (email: string) => {
+  const response = await axios.post(`${API}/check-email`, { email });
+  return response.data;
+};

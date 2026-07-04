@@ -4,11 +4,14 @@ import {
   login,
   register,
    getProfile,
-   changePassword
+   changePassword,
+   checkEmail
 } from "../controllers/authController";
 import { protect ,authorize } from "../middleware/authMiddleware";
 
 const router = express.Router();
+
+router.post("/check-email", checkEmail);
 
 router.post("/register", register);
 
