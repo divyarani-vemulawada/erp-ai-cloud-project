@@ -1,7 +1,8 @@
 import type { LoginData, RegisterData } from "../types/auth";
 import axios from "axios";
+import { API_URL } from "../config/env";
 
-const API = "http://localhost:1000/api/auth";
+const API = `${API_URL}/auth`;
 
 
 

@@ -20,7 +20,7 @@ router.post("/", protect, authorize("admin", "manager"), async (req, res) => {
 
 router.put("/:id", protect, authorize("admin", "manager"), async (req, res) => {
   const project = await Project.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
+    returnDocument: 'after',
   });
   if (!project) return res.status(404).json({ message: "Project not found" });
   res.json({ message: "Project updated", project });

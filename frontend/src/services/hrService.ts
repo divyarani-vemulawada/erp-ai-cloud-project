@@ -1,8 +1,9 @@
 import axios from "axios";
 import type { Employee, LeaveRequest, Attendance, Payroll, Payslip, OrgDepartment } from "../types/hr";
+import { API_URL } from "../config/env";
 
 const hrApi = axios.create({
-  baseURL: "http://localhost:1000/api/hr",
+  baseURL: `${API_URL}/hr`,
 });
 
 hrApi.interceptors.request.use((config) => {

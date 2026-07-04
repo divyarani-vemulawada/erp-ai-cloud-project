@@ -1,24 +1,18 @@
-import type { Employee } from '../../types/hr';
+import type { OrgDepartment } from '../../types/hr';
 import Card from '../common/Card';
 
 type OrganisationChartProps = {
-  employees: Employee[];
+  departments: OrgDepartment[];
 };
 
-function OrganisationChart({ employees }: OrganisationChartProps) {
-  const departments = employees.reduce<Record<string, Employee[]>>((acc, emp) => {
-    if (!acc[emp.department]) acc[emp.department] = [];
-    acc[emp.department].push(emp);
-    return acc;
-  }, {});
-
+function OrganisationChart({ departments }: OrganisationChartProps) {
   return (
     <div className="org-chart">
-      {Object.entries(departments).map(([dept, deptEmployees]) => (
-        <Card key={dept} title={dept}>
+      {departments.map((dept) => (
+        <Card key={dept.name} title={dept.name}>
           <ul className="org-chart-list">
-            {deptEmployees.map((emp) => (
-              <li key={emp.id} className="org-chart-item">
+            {dept.employees.map((emp) => (
+              <li key={emp.employeeId} className="org-chart-item">
                 <span className="org-name">{emp.fullName}</span>
                 <span className="org-designation">{emp.designation}</span>
               </li>

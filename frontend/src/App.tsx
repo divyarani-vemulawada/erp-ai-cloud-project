@@ -5,7 +5,6 @@ import Attendance from './pages/HR/Attendance';
 import Leave from './pages/HR/Leave';
 import Payroll from './pages/HR/Payroll';
 import Dashboard from './pages/Dashboard';
-import Profile from './pages/Profile';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Finance from './pages/Finance';

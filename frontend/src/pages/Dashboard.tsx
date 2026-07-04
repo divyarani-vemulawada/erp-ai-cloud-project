@@ -45,7 +45,6 @@ function Dashboard() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [layout, setLayout] = useState<WidgetLayoutItem[]>([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -68,22 +67,19 @@ function Dashboard() {
   }, []);
 
   const handleSaveLayout = async (newLayout: WidgetLayoutItem[]) => {
-    setIsSaving(true);
     try {
       await saveDashboardConfig(newLayout);
       setLayout(newLayout);
       setIsEditing(false);
     } catch (err) {
       console.error("Failed to save layout:", err);
-    } finally {
-      setIsSaving(false);
     }
   };
 
   // Chart data derived from live data
   const inventoryChartData = inventory.slice(0, 6).map((item) => ({
     name: item.name.length > 12 ? item.name.slice(0, 12) + "…" : item.name,
-    stock: item.quantityInStock,
+    stock: item.stock,
   }));
 
   const financeChartData = summary?.financeByType?.slice(0, 6).map((f) => ({
@@ -211,7 +207,7 @@ function Dashboard() {
               icon={<FaArrowDown />}
               trendText="Behind schedule"
               trendDirection={summary && summary.atRiskProjects > 0 ? "down" : "up"}
-              variant={summary && summary.atRiskProjects > 0 ? "alert" : "success"}
+              variant={summary && summary.atRiskProjects > 0 ? "danger" : "success"}
             />
           </div>
         );
@@ -315,7 +311,6 @@ function Dashboard() {
             initialLayout={layout}
             onSave={handleSaveLayout}
             onCancel={() => setIsEditing(false)}
-            isSaving={isSaving}
           />
         </div>
       </MainLayout>

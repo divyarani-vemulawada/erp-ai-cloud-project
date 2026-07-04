@@ -22,7 +22,7 @@ router.put("/:id/read", protect, async (req, res) => {
   const notification = await Notification.findByIdAndUpdate(
     req.params.id,
     { status: "Read" },
-    { new: true }
+    { returnDocument: 'after' }
   );
   if (!notification) return res.status(404).json({ message: "Notification not found" });
   res.json({ message: "Notification marked read", notification });

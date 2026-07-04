@@ -36,7 +36,7 @@ router.put(
     const transaction = await FinanceTransaction.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true }
+      { returnDocument: 'after' }
     );
     if (!transaction) return res.status(404).json({ message: "Transaction not found" });
     res.json({ message: "Transaction updated", transaction });

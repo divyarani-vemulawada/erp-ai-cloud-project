@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { useSidebar } from "../context/SidebarContext";
-import axios from "axios";
+import api from "../services/api";
 import { FaTimes, FaEnvelope, FaTag, FaCalendarAlt, FaCheckCircle, FaBuilding, FaMapMarkerAlt, FaEdit, FaSave } from "react-icons/fa";
 
 function ProfileDrawer() {
@@ -30,15 +30,10 @@ function ProfileDrawer() {
     setError("");
     setSuccess("");
     try {
-      const token = localStorage.getItem("token");
-      await axios.put(
-        "http://localhost:1000/api/users/me",
-        { name },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await api.put('/users/me', { name });
       const updatedUser = { ...user, name };
       localStorage.setItem("user", JSON.stringify(updatedUser));
-      auth?.login(updatedUser, token!);
+      auth?.login(updatedUser, localStorage.getItem("token")!);
       setSuccess("Profile updated successfully!");
       setEditMode(false);
     } catch (err) {

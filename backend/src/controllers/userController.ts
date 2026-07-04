@@ -64,13 +64,11 @@ export const updateUser = async (
   res: Response
 ) => {
   try {
-    const user = await User.findByIdAndUpdate( 
-      req.params.id, 
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
       req.body,
-        {
-          new: true
-        }
-      );
+      { returnDocument: 'after' }
+    );
 
     if (!user) {
       return res.status(404).json({

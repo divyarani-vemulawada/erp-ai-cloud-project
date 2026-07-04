@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { getEmployees, getAttendance, getLeaveRequests } from "../../services/hrService";
 
 const EmployeeDetail = () => {
   const { employeeId } = useParams();
@@ -11,18 +11,14 @@ const EmployeeDetail = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const headers = { Authorization: `Bearer ${token}` };
-
     Promise.all([
-      axios.get("http://localhost:1000/api/hr/employees", { headers }),
-      axios.get("http://localhost:1000/api/hr/attendance", { headers }),
-      axios.get("http://localhost:1000/api/hr/leave", { headers }),
-    ]).then(([empRes, attRes, leaveRes]) => {
-      const emp = empRes.data.find((e: any) => e.employeeId === employeeId);
-      setEmployee(emp);
-      setAttendance(attRes.data.filter((a: any) => a.employeeId === employeeId));
-      setLeave(leaveRes.data.filter((l: any) => l.employeeId === employeeId));
+      getEmployees(),
+      getAttendance(),
+      getLeaveRequests(),
+    ]).then(([employees, attendance, leave]) => {
+      setEmployee(employees.find((e) => e.employeeId === employeeId) ?? null);
+      setAttendance(attendance.filter((a) => a.employeeId === employeeId));
+      setLeave(leave.filter((l) => l.employeeId === employeeId));
       setLoading(false);
     }).catch(() => setLoading(false));
   }, [employeeId]);

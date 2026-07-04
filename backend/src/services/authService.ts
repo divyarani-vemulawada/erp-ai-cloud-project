@@ -5,8 +5,7 @@ import { generateToken } from "../utils/jwt";
 export const registerUser = async (
   name: string,
   email: string,
-  password: string,
-  role: string
+  password: string
 ) => {
 
   const exists = await User.findOne({ email });
@@ -21,10 +20,10 @@ export const registerUser = async (
     name,
     email,
     password: hashedPassword,
-    role
   });
 
-  return user;
+  const { password: _pw, ...safeUser } = user.toObject();
+  return safeUser;
 };
 
 export const loginUser = async (
@@ -52,8 +51,9 @@ export const loginUser = async (
     user.role
   );
 
+  const { password: _pw, ...safeUser } = user.toObject();
   return {
     token,
-    user
+    user: safeUser,
   };
 };

@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import axios from "axios";
+import api from "../services/api";
 
 const Profile = () => {
   const auth = useContext(AuthContext);
@@ -17,16 +17,11 @@ const Profile = () => {
     setError("");
     setSuccess("");
     try {
-      const token = localStorage.getItem("token");
-      await axios.put(
-        "http://localhost:1000/api/users/me",
-        { name },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await api.put('/users/me', { name });
       // Update localStorage and context
       const updatedUser = { ...user, name };
       localStorage.setItem("user", JSON.stringify(updatedUser));
-      auth?.login(updatedUser, token!);
+      auth?.login(updatedUser, localStorage.getItem("token")!);
       setSuccess("Profile updated successfully!");
       setEditMode(false);
     } catch (err) {

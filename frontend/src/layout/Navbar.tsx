@@ -1,8 +1,8 @@
-import { FaBell, FaEnvelope, FaSearch, FaBars, FaUser, FaSignOutAlt, FaCog } from "react-icons/fa";
+import { FaBell, FaEnvelope, FaSearch, FaBars } from "react-icons/fa";
 import { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+import { getEmployees } from "../services/hrService";
 import { useSidebar } from "../context/SidebarContext";
 
 const notifications = [
@@ -41,12 +41,8 @@ function Navbar() {
 
   // Load all employees once on mount
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    axios
-      .get("http://localhost:1000/api/hr/employees", {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      .then((res) => setAllEmployees(res.data))
+    getEmployees()
+      .then((data) => setAllEmployees(data))
       .catch(() => setAllEmployees([]));
   }, []);
 
@@ -141,7 +137,6 @@ function Navbar() {
           <FaBell className="nav-icon" onClick={() => {
             setShowNotifications(!showNotifications);
             setShowMessages(false);
-            setShowProfile(false);
           }} />
           {unreadNotifs > 0 && <span className="badge">{unreadNotifs}</span>}
 
@@ -163,7 +158,6 @@ function Navbar() {
           <FaEnvelope className="nav-icon" onClick={() => {
             setShowMessages(!showMessages);
             setShowNotifications(false);
-            setShowProfile(false);
           }} />
           {unreadMsgs > 0 && <span className="badge">{unreadMsgs}</span>}
 

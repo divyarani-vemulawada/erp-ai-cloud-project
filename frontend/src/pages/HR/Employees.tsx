@@ -1,23 +1,25 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react';
 import MainLayout from '../../layout/Mainlayout';
 import EmployeeList from '../../components/HR/EmployeeList';
 import EmployeeForm from '../../components/HR/EmployeeForm';
 import OrganisationChart from '../../components/HR/OrganisationChart';
 import Button from '../../components/common/Button';
-import type { Employee } from '../../types/hr';
+import type { Employee, OrgDepartment } from '../../types/hr';
 import {
   getEmployees,
   createEmployee,
   updateEmployee,
   deleteEmployee,
+  getOrganisationChart,
 } from '../../services/hrService';
-
-const currentUserRole = 'admin';
+import { AuthContext } from '../../context/AuthContext';
 
 function Employees() {
-  const isAdmin = currentUserRole === 'admin';
+  const auth = useContext(AuthContext);
+  const isAdmin = auth?.user?.role === 'admin';
 
   const [employees, setEmployees] = useState<Employee[]>([]);
+  const [orgDepartments, setOrgDepartments] = useState<OrgDepartment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [mode, setMode] = useState<'add' | 'edit' | null>(null);
@@ -29,8 +31,9 @@ function Employees() {
     try {
       setLoading(true);
       setError(null);
-      const data = await getEmployees();
+      const [data, org] = await Promise.all([getEmployees(), getOrganisationChart()]);
       setEmployees(data);
+      setOrgDepartments(org);
     } catch {
       setError('Failed to load employees. Please try again.');
     } finally {
@@ -115,7 +118,7 @@ function Employees() {
               <div className="page-header">
                 <h2>Organisation Chart</h2>
               </div>
-              <OrganisationChart employees={employees} />
+              <OrganisationChart departments={orgDepartments} />
             </div>
           </>
         )}

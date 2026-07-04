@@ -30,7 +30,7 @@ export const updateLeaveStatus = async (
   const leave = await LeaveRequest.findByIdAndUpdate(
     id,
     { status },
-    { new: true }
+    { returnDocument: 'after' }
   );
   if (!leave) throw new Error("Leave request not found");
   return leave;

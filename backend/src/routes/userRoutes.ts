@@ -25,7 +25,7 @@ router.put("/me", protect, async (req: Request, res: Response) => {
     const user = await User.findByIdAndUpdate(
       userId,
       { name },
-      { new: true }
+      { returnDocument: 'after' }
     ).select("-password");
 
     if (!user) {

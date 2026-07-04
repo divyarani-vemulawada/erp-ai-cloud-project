@@ -42,7 +42,7 @@ export const updateEmployee = async (
     status: "Active" | "Inactive";
   }>
 ) => {
-  const employee = await Employee.findByIdAndUpdate(id, data, { new: true });
+  const employee = await Employee.findByIdAndUpdate(id, data, { returnDocument: 'after' });
   if (!employee) throw new Error("Employee not found");
   return employee;
 };

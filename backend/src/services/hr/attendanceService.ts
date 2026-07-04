@@ -22,7 +22,7 @@ export const updateAttendance = async (
     status: "Present" | "Absent";
   }>
 ) => {
-  const record = await Attendance.findByIdAndUpdate(id, data, { new: true });
+  const record = await Attendance.findByIdAndUpdate(id, data, { returnDocument: 'after' });
   if (!record) throw new Error("Attendance record not found");
   return record;
 };

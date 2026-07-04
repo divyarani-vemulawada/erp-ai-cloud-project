@@ -12,14 +12,12 @@ export const register = async (req: Request, res: Response ) => {
       name,
       email,
       password,
-      role
     } = req.body;
 
     const user = await registerUser(
         name,
         email,
-        password,
-        role
+        password
       );
 
     res.status(201).json({message:"User registered successfully", user});

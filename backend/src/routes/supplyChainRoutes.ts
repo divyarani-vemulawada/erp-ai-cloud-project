@@ -23,7 +23,7 @@ router.post("/inventory", protect, canManage, async (req, res) => {
 
 router.put("/inventory/:id", protect, canManage, async (req, res) => {
   const item = await InventoryItem.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
+    returnDocument: 'after',
   });
   if (!item) return res.status(404).json({ message: "Inventory item not found" });
   res.json({ message: "Inventory item updated", item });
@@ -51,7 +51,7 @@ router.post("/purchase-orders", protect, canManage, async (req, res) => {
 
 router.put("/purchase-orders/:id", protect, canManage, async (req, res) => {
   const order = await PurchaseOrder.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
+    returnDocument: 'after',
   });
   if (!order) return res.status(404).json({ message: "Purchase order not found" });
   res.json({ message: "Purchase order updated", order });

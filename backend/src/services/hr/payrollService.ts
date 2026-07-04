@@ -29,7 +29,7 @@ export const updatePayroll = async (
     netSalary: number;
   }>
 ) => {
-  const payroll = await Payroll.findByIdAndUpdate(id, data, { new: true });
+  const payroll = await Payroll.findByIdAndUpdate(id, data, { returnDocument: 'after' });
   if (!payroll) throw new Error("Payroll record not found");
   return payroll;
 };
