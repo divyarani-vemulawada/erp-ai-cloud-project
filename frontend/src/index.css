@@ -49,11 +49,49 @@ body {
   overflow-y: auto;
 }
 
-.logo {
+.logo-section {
   text-align: center;
-  margin-bottom: 36px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-logo-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.square-dot-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 8px);
+  grid-gap: 5px;
+}
+
+.square-dot-grid span {
+  width: 8px;
+  height: 8px;
+  border-radius: 2.5px;
+}
+
+.square-dot-grid span:nth-child(1) {
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+}
+
+.square-dot-grid span:nth-child(2) {
+  background: linear-gradient(135deg, #06b6d4, #3b82f6);
+}
+
+.square-dot-grid span:nth-child(3) {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+}
+
+.square-dot-grid span:nth-child(4) {
+  background: linear-gradient(135deg, #8b5cf6, #c084fc);
 }
 
 .csn {
@@ -1331,3 +1369,42 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(99,102,241,0.3);
 }
+
+/* ── Premium Sonner Toast Custom Glassmorphic Styling ──────────────── */
+.amdox-toaster [data-sonner-toast] {
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(99, 102, 241, 0.18) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 40px -10px rgba(99, 102, 241, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  color: #1e293b !important;
+  padding: 16px 20px !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.amdox-toaster [data-sonner-toast] [data-title] {
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  color: #0f172a !important;
+}
+
+.amdox-toaster [data-sonner-toast] [data-description] {
+  font-size: 12px !important;
+  color: #64748b !important;
+  margin-top: 4px !important;
+}
+
+.amdox-toaster [data-sonner-toast] [data-close-button] {
+  top: 12px !important;
+  right: 12px !important;
+  border: 1px solid rgba(226, 232, 240, 0.8) !important;
+  background: white !important;
+  color: #64748b !important;
+  transition: all 0.2s ease !important;
+}
+
+.amdox-toaster [data-sonner-toast] [data-close-button]:hover {
+  background: #f1f5f9 !important;
+  color: #1e293b !important;
+}

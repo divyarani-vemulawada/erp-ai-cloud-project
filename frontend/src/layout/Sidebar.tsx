@@ -17,7 +17,15 @@ function Sidebar() {
   return (
     <div className="sidebar">
       <div className="logo-section">
-        <h2 className="csn">ERP Cloud AI</h2>
+        <div className="brand-logo-icon" style={{ marginBottom: '12px' }}>
+          <div className="square-dot-grid">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+        <h2 className="csn">Amdox ERP</h2>
         <p className="subtitle">Smart Enterprise Suite</p>
       </div>
       <nav>

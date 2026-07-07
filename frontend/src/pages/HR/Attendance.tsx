@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import MainLayout from '../../layout/Mainlayout';
+import { toast } from 'sonner';
 import AttendanceTracker from '../../components/HR/AttendanceTracker';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
@@ -73,8 +74,11 @@ function AttendancePage() {
       setFormData(emptyForm);
       setShowForm(false);
       await loadAttendance();
+      toast.success("Attendance record added successfully!");
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : 'Failed to save record');
+      const msg = err instanceof Error ? err.message : 'Failed to save record';
+      setFormError(msg);
+      toast.error(msg);
     } finally {
       setFormLoading(false);
     }
@@ -85,8 +89,10 @@ function AttendancePage() {
       const checkIn = new Date().toTimeString().slice(0, 5);
       await updateAttendance(id, { checkIn, status: 'Present' });
       await loadAttendance();
+      toast.success("Check-in logged successfully.");
     } catch {
       setError('Failed to record check-in. Please try again.');
+      toast.error("Failed to record check-in.");
     }
   };
 
@@ -95,8 +101,10 @@ function AttendancePage() {
       const checkOut = new Date().toTimeString().slice(0, 5);
       await updateAttendance(id, { checkOut });
       await loadAttendance();
+      toast.success("Check-out logged successfully.");
     } catch {
       setError('Failed to record check-out. Please try again.');
+      toast.error("Failed to record check-out.");
     }
   };
 
@@ -104,8 +112,10 @@ function AttendancePage() {
     try {
       await updateAttendance(id, { status });
       await loadAttendance();
+      toast.success(`Attendance status updated to ${status}.`);
     } catch {
       setError('Failed to update status. Please try again.');
+      toast.error("Failed to update status.");
     }
   };
 

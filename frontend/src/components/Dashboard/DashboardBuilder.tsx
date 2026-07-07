@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaTrash, FaPlus, FaSave, FaTimes, FaGripVertical, FaUndo } from "react-icons/fa";
+import { toast } from "sonner";
 import WidgetLibrary from "./WidgetLibrary";
 
 interface WidgetLayoutItem {
@@ -38,10 +39,13 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
     };
     setLayout([...layout, newWidget]);
     setShowLibrary(false);
+    toast.success(`Widget "${title}" added to dashboard layout.`);
   };
 
   const handleDeleteWidget = (id: string) => {
+    const widget = layout.find(w => w.id === id);
     setLayout(layout.filter((w) => w.id !== id).map((w, idx) => ({ ...w, order: idx })));
+    toast.info(`Widget "${widget?.title || 'Widget'}" removed from layout.`);
   };
 
   const handleResize = (id: string, newSize: "small" | "medium" | "large" | "full") => {
@@ -100,6 +104,7 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
       { id: "w-projectschart", type: "projectsChart", title: "Projects Spend Tracker", size: "full", order: 9 },
     ];
     setLayout(defaultLayout);
+    toast.info("Dashboard layout reset to default configurations.");
   };
 
   const getGridSpanClass = (size: "small" | "medium" | "large" | "full") => {

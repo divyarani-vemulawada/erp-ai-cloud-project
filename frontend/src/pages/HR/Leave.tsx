@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import MainLayout from '../../layout/Mainlayout';
+import { toast } from 'sonner';
 import LeaveManagement from '../../components/HR/LeaveManagement';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
@@ -70,8 +71,11 @@ function LeavePage() {
       setFormData(emptyForm);
       setShowForm(false);
       await loadLeaveRequests();
+      toast.success("Leave request submitted successfully!");
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : 'Failed to submit leave request');
+      const msg = err instanceof Error ? err.message : 'Failed to submit leave request';
+      setFormError(msg);
+      toast.error(msg);
     } finally {
       setFormLoading(false);
     }
@@ -81,8 +85,10 @@ function LeavePage() {
     try {
       await updateLeaveStatus(id, 'Approved');
       await loadLeaveRequests();
+      toast.success("Leave request approved successfully.");
     } catch {
       setError('Failed to approve leave. Please try again.');
+      toast.error("Failed to approve leave.");
     }
   };
 
@@ -90,8 +96,10 @@ function LeavePage() {
     try {
       await updateLeaveStatus(id, 'Rejected');
       await loadLeaveRequests();
+      toast.success("Leave request rejected.");
     } catch {
       setError('Failed to reject leave. Please try again.');
+      toast.error("Failed to reject leave.");
     }
   };
 

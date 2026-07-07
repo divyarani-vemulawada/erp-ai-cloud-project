@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { registerUser, checkEmailExists } from "../../services/authService";
+import { toast } from "sonner";
 import {
   FaUser,
   FaEnvelope,
@@ -117,10 +118,12 @@ const RegisterForm = () => {
         role: "employee" // Defaulting to employee role internally
       });
 
-      alert("User Registered Successfully");
+      toast.success("Account registered successfully!");
       navigate("/");
     } catch (error: any) {
-      setSubmitError(error.response?.data?.message || "Registration failed. Please try again.");
+      const msg = error.response?.data?.message || "Registration failed. Please try again.";
+      setSubmitError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -138,7 +141,7 @@ const RegisterForm = () => {
             <span></span>
           </div>
         </div>
-        <span className="brand-name">ERP</span>
+        <span className="brand-name">Amdox ERP</span>
       </div>
 
       <div className="auth-container">

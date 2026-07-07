@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { loginUser } from "../../services/authService";
+import { toast } from "sonner";
 import {
   FaEnvelope,
   FaLock,
@@ -35,9 +36,12 @@ const LoginForm = () => {
       });
 
       auth?.login(response.user, response.token);
+      toast.success("Welcome back! Logged in successfully.");
       navigate("/employees");
     } catch (error: any) {
-      setErrorMsg(error.response?.data?.message || "Login failed. Please check credentials.");
+      const msg = error.response?.data?.message || "Login failed. Please check credentials.";
+      setErrorMsg(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -55,7 +59,7 @@ const LoginForm = () => {
             <span></span>
           </div>
         </div>
-        <span className="brand-name">ERP</span>
+        <span className="brand-name">Amdox ERP</span>
       </div>
 
       <div className="auth-container">

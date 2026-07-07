@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "sonner";
 import { getEmployees } from "../../services/hrService";
 import { getFinanceTransactions } from "../../services/financeService";
 import { getInventoryItems } from "../../services/supplyChainService";
@@ -92,9 +93,11 @@ export const ReportBuilder: React.FC = () => {
       }
 
       setData(result);
+      toast.success(`Report compiled successfully with ${result.length} records.`);
     } catch (err) {
       console.error(err);
       setError("Failed to fetch module data for report generator.");
+      toast.error("Failed to run report schema.");
     } finally {
       setLoading(false);
     }

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { useSidebar } from "../context/SidebarContext";
 import api from "../services/api";
+import { toast } from "sonner";
 import { FaTimes, FaEnvelope, FaTag, FaCalendarAlt, FaCheckCircle, FaBuilding, FaMapMarkerAlt, FaEdit, FaSave } from "react-icons/fa";
 
 function ProfileDrawer() {
@@ -35,9 +36,11 @@ function ProfileDrawer() {
       localStorage.setItem("user", JSON.stringify(updatedUser));
       auth?.login(updatedUser, localStorage.getItem("token")!);
       setSuccess("Profile updated successfully!");
+      toast.success("Profile updated successfully!");
       setEditMode(false);
     } catch (err) {
       setError("Failed to update profile.");
+      toast.error("Failed to update profile.");
     }
     setLoading(false);
   };
@@ -45,6 +48,7 @@ function ProfileDrawer() {
   const handleLogout = () => {
     auth?.logout();
     setIsProfileOpen(false);
+    toast.info("Logged out successfully. Goodbye!");
     navigate("/");
   };
 

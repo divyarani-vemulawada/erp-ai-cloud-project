@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import MainLayout from '../layout/Mainlayout';
+import { toast } from 'sonner';
 import Button from '../components/common/Button';
 import Card from '../components/common/Card';
 import Input from '../components/common/Input';
@@ -77,8 +78,11 @@ function Finance() {
       setFormData(emptyForm);
       setShowForm(false);
       await loadTransactions();
+      toast.success("Transaction recorded successfully!");
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save transaction.');
+      const msg = err instanceof Error ? err.message : 'Failed to save transaction.';
+      setError(msg);
+      toast.error(msg);
     }
   };
 
@@ -86,8 +90,10 @@ function Finance() {
     try {
       await deleteFinanceTransaction(id);
       await loadTransactions();
+      toast.success("Transaction deleted successfully.");
     } catch {
       setError('Failed to delete transaction.');
+      toast.error("Failed to delete transaction.");
     }
   };
 

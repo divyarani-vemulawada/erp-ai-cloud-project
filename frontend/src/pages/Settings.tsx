@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import MainLayout from '../layout/Mainlayout';
+import { toast } from 'sonner';
 import Button from '../components/common/Button';
 import Card from '../components/common/Card';
 import Input from '../components/common/Input';
@@ -53,11 +54,17 @@ function Settings() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    await api.put('/settings', {
-      ...formData,
-      approvalLimit: Number(formData.approvalLimit),
-    });
-    setMessage('Settings saved successfully.');
+    try {
+      await api.put('/settings', {
+        ...formData,
+        approvalLimit: Number(formData.approvalLimit),
+      });
+      setMessage('Settings saved successfully.');
+      toast.success("Tenant settings updated successfully!");
+    } catch {
+      setMessage('Failed to save settings.');
+      toast.error("Failed to save settings.");
+    }
   };
 
   return (

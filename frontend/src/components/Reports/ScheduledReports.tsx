@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaClock, FaTrash, FaPlus } from "react-icons/fa";
+import { toast } from "sonner";
 
 interface ScheduledReportItem {
   id: string;
@@ -36,10 +37,13 @@ export const ScheduledReports: React.FC = () => {
     setSchedules([...schedules, newSchedule]);
     setRecipient("");
     setShowForm(false);
+    toast.success(`Scheduled delivery of "${title}" to ${recipient} successfully!`);
   };
 
   const handleDelete = (id: string) => {
+    const sched = schedules.find(s => s.id === id);
     setSchedules(schedules.filter((s) => s.id !== id));
+    toast.info(`Automated run for "${sched?.title || 'Report'}" removed.`);
   };
 
   return (

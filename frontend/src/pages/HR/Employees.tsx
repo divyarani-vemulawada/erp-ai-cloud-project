@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useContext } from 'react';
 import MainLayout from '../../layout/Mainlayout';
+import { toast } from 'sonner';
 import EmployeeList from '../../components/HR/EmployeeList';
 import EmployeeForm from '../../components/HR/EmployeeForm';
 import OrganisationChart from '../../components/HR/OrganisationChart';
@@ -59,8 +60,10 @@ function Employees() {
     try {
       await deleteEmployee(id);
       await loadEmployees();
+      toast.success("Employee deleted successfully.");
     } catch {
       setError('Failed to delete employee. Please try again.');
+      toast.error("Failed to delete employee.");
     }
   };
 
@@ -72,13 +75,20 @@ function Employees() {
   // Errors thrown here propagate into EmployeeForm's own catch block and
   // are displayed inline in the form — no extra error handling needed here.
   const handleFormSubmit = async (employeeData: Omit<Employee, 'id'>) => {
-    if (mode === 'edit' && selectedEmployee) {
-      await updateEmployee(selectedEmployee.id, employeeData);
-    } else {
-      await createEmployee(employeeData);
+    try {
+      if (mode === 'edit' && selectedEmployee) {
+        await updateEmployee(selectedEmployee.id, employeeData);
+        toast.success("Employee details updated successfully!");
+      } else {
+        await createEmployee(employeeData);
+        toast.success("New employee added successfully!");
+      }
+      await loadEmployees();
+      handleCancel();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to save employee details.");
+      throw err;
     }
-    await loadEmployees();
-    handleCancel();
   };
 
   return (

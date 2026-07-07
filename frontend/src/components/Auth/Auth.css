@@ -44,21 +44,39 @@
 
 .square-dot-grid {
   display: grid;
-  grid-template-columns: repeat(2, 6px);
-  grid-gap: 4px;
+  grid-template-columns: repeat(2, 8px);
+  grid-gap: 5px;
 }
 
 .square-dot-grid span {
-  width: 6px;
-  height: 6px;
-  background: #000;
-  border-radius: 2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 2.5px;
+}
+
+.square-dot-grid span:nth-child(1) {
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+}
+
+.square-dot-grid span:nth-child(2) {
+  background: linear-gradient(135deg, #06b6d4, #3b82f6);
+}
+
+.square-dot-grid span:nth-child(3) {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+}
+
+.square-dot-grid span:nth-child(4) {
+  background: linear-gradient(135deg, #8b5cf6, #c084fc);
 }
 
 .brand-name {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 800;
-  color: #000;
+  background: linear-gradient(135deg, #4f46e5 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   letter-spacing: -0.5px;
 }
 
@@ -145,7 +163,7 @@ form {
 .input-icon-left {
   position: absolute;
   left: 16px;
-  color: #6b7280;
+  color: #293a5b;
   font-size: 16px;
   pointer-events: none;
 }
@@ -159,7 +177,7 @@ form {
   color: #1f2937;
   font-size: 15px;
   outline: none;
-  backdrop-filter: blur(5px);
+  /* backdrop-filter: blur(0.5px); */
   -webkit-backdrop-filter: blur(5px);
   transition: all 0.2s ease;
   box-sizing: border-box;

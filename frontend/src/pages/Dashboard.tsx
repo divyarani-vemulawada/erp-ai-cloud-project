@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import MainLayout from "../layout/Mainlayout";
+import { toast } from "sonner";
 import { getReportSummary } from "../services/reportService";
 import { getInventoryItems } from "../services/supplyChainService";
 import { getProjects } from "../services/projectService";
@@ -71,8 +72,10 @@ function Dashboard() {
       await saveDashboardConfig(newLayout);
       setLayout(newLayout);
       setIsEditing(false);
+      toast.success("Dashboard layout saved successfully!");
     } catch (err) {
       console.error("Failed to save layout:", err);
+      toast.error("Failed to save dashboard layout configuration.");
     }
   };
 

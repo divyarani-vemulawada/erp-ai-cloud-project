@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import MainLayout from '../../layout/Mainlayout';
+import { toast } from 'sonner';
 import PayrollDashboard from '../../components/HR/PayrollDashboard';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
@@ -121,8 +122,10 @@ function PayrollPage() {
     try {
       await deletePayroll(id);
       await loadPayroll();
+      toast.success("Payroll record deleted successfully.");
     } catch {
       setError('Failed to delete payroll record. Please try again.');
+      toast.error("Failed to delete payroll record.");
     }
   };
 
@@ -141,13 +144,17 @@ function PayrollPage() {
     try {
       if (mode === 'edit' && selectedRecord) {
         await updatePayroll(selectedRecord.id, salaryFields);
+        toast.success("Payroll record updated successfully!");
       } else {
         await createPayroll({ employeeId: formData.employeeId, ...salaryFields });
+        toast.success("Payroll record created successfully!");
       }
       await loadPayroll();
       handleCancel();
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : 'Failed to save payroll record');
+      const msg = err instanceof Error ? err.message : 'Failed to save payroll record';
+      setFormError(msg);
+      toast.error(msg);
     } finally {
       setFormLoading(false);
     }
@@ -172,8 +179,10 @@ function PayrollPage() {
     try {
       await deletePayslip(id);
       await loadPayslips();
+      toast.success("Payslip deleted successfully.");
     } catch {
       setSlipError('Failed to delete payslip. Please try again.');
+      toast.error("Failed to delete payslip.");
     }
   };
 
@@ -195,15 +204,15 @@ function PayrollPage() {
         deductions:  payslipTarget.deductions,
         netSalary:   payslipTarget.netSalary,
       });
-      setSlipSuccess(
-        `Payslip for ${payslipTarget.employeeId} — ${slipMonth} ${slipYear} generated successfully.`
-      );
+      const successMsg = `Payslip for ${payslipTarget.employeeId} — ${slipMonth} ${slipYear} generated successfully.`;
+      setSlipSuccess(successMsg);
+      toast.success(successMsg);
       setPayslipTarget(null);
       await loadPayslips();
     } catch (err: any) {
-      setSlipError(
-        err?.response?.data?.message ?? (err instanceof Error ? err.message : 'Failed to generate payslip')
-      );
+      const errMsg = err?.response?.data?.message ?? (err instanceof Error ? err.message : 'Failed to generate payslip');
+      setSlipError(errMsg);
+      toast.error(errMsg);
     } finally {
       setSlipLoading(false);
     }

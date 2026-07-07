@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import MainLayout from '../layout/Mainlayout';
+import { toast } from 'sonner';
 import Button from '../components/common/Button';
 import Card from '../components/common/Card';
 import Input from '../components/common/Input';
@@ -78,8 +79,10 @@ function SupplyChain() {
       setFormData(emptyItem);
       setShowForm(false);
       await loadSupplyChain();
+      toast.success("Inventory item added successfully!");
     } catch {
       setError('Failed to save inventory item.');
+      toast.error("Failed to save inventory item.");
     }
   };
 
