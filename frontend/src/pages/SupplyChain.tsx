@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useContext } from 'react';
 import MainLayout from '../layout/Mainlayout';
+import { AuthContext } from '../context/AuthContext';
 import { toast } from 'sonner';
 import Button from '../components/common/Button';
 import Card from '../components/common/Card';
@@ -24,6 +25,10 @@ const emptyItem = {
 };
 
 function SupplyChain() {
+  const auth = useContext(AuthContext);
+  const role = auth?.user?.role || '';
+  const canWrite = ['admin', 'supply_chain_manager'].includes(role);
+
   const [items, setItems] = useState<InventoryItem[]>([]);
   const [openOrders, setOpenOrders] = useState(0);
   const [showForm, setShowForm] = useState(false);
@@ -94,7 +99,7 @@ function SupplyChain() {
       <div className="module-page">
         <div className="page-header">
           <h1>Supply Chain & Inventory</h1>
-          {!showForm && <Button text="Add Item" onClick={() => setShowForm(true)} />}
+          {!showForm && canWrite && <Button text="Add Item" onClick={() => setShowForm(true)} />}
         </div>
         {error && <div className="page-error">{error}</div>}
 

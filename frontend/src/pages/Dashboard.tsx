@@ -55,6 +55,26 @@ function Dashboard() {
   const [layout, setLayout] = useState<WidgetLayoutItem[]>([]);
   const [isEditing, setIsEditing] = useState(false);
 
+  const isWidgetVisible = (widgetType: string) => {
+    const role = user?.role || 'employee';
+    if (role === 'admin' || role === 'executive' || role === 'auditor') return true;
+
+    switch (role) {
+      case 'hr_manager':
+        return ['workforce', 'payroll', 'attendanceChart', 'unreadAlerts', 'heatmap'].includes(widgetType);
+      case 'finance_manager':
+        return ['payroll', 'openPOs', 'financeChart', 'unreadAlerts'].includes(widgetType);
+      case 'supply_chain_manager':
+        return ['lowStock', 'openPOs', 'inventoryChart', 'unreadAlerts'].includes(widgetType);
+      case 'project_manager':
+        return ['projectsRisk', 'projectsChart', 'unreadAlerts', 'heatmap'].includes(widgetType);
+      case 'employee':
+        return ['attendanceChart', 'unreadAlerts', 'projectsChart'].includes(widgetType);
+      default:
+        return false;
+    }
+  };
+
   useEffect(() => {
     const fetchAll = async () => {
       try {
@@ -341,24 +361,28 @@ function Dashboard() {
             </p>
           </div>
 
-          <button
-            className="btn"
-            style={{ display: "flex", alignItems: "center", gap: "8px", minHeight: "38px" }}
-            onClick={() => setIsEditing(true)}
-          >
-            <FaEdit style={{ marginRight: "4px" }} /> Customize Layout
-          </button>
+          {user?.role === 'admin' && (
+            <button
+              className="btn"
+              style={{ display: "flex", alignItems: "center", gap: "8px", minHeight: "38px" }}
+              onClick={() => setIsEditing(true)}
+            >
+              <FaEdit style={{ marginRight: "4px" }} /> Customize Layout
+            </button>
+          )}
         </div>
 
         {!summary ? (
           <p className="loading-text">Loading dashboard data…</p>
         ) : (
           <div className="bento-grid">
-            {(layout ?? []).length > 0
-              ? layout.map((widget) => renderWidget(widget))
+            {(layout ?? []).filter(widget => isWidgetVisible(widget.type)).length > 0
+              ? (layout ?? [])
+                  .filter(widget => isWidgetVisible(widget.type))
+                  .map((widget) => renderWidget(widget))
               : (
                 <div className="bento-card span-12" style={{ textAlign: "center", padding: "48px" }}>
-                  <p style={{ color: "#94a3b8", fontSize: "16px" }}>No widgets configured. Click <strong>Customize Layout</strong> to add some!</p>
+                  <p style={{ color: "#94a3b8", fontSize: "16px" }}>No widgets configured or accessible for your role.</p>
                 </div>
               )
             }

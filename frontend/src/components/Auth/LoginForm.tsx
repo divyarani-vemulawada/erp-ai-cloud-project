@@ -8,9 +8,6 @@ import {
   FaLock,
   FaEye,
   FaEyeSlash,
-  FaGoogle,
-  FaFacebookF,
-  FaApple,
   FaSignInAlt
 } from "react-icons/fa";
 import "./Auth.css";

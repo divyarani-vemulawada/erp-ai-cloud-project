@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useContext } from 'react';
 import MainLayout from '../layout/Mainlayout';
+import { AuthContext } from '../context/AuthContext';
 import Button from '../components/common/Button';
 import Card from '../components/common/Card';
 import Input from '../components/common/Input';
@@ -19,6 +20,10 @@ const emptyProject = {
 };
 
 function Projects() {
+  const auth = useContext(AuthContext);
+  const role = auth?.user?.role || '';
+  const canWrite = ['admin', 'project_manager'].includes(role);
+
   const [projects, setProjects] = useState<Project[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState(emptyProject);
@@ -71,7 +76,7 @@ function Projects() {
       <div className="module-page">
         <div className="page-header">
           <h1>Project Management</h1>
-          {!showForm && <Button text="Add Project" onClick={() => setShowForm(true)} />}
+          {!showForm && canWrite && <Button text="Add Project" onClick={() => setShowForm(true)} />}
         </div>
         {error && <div className="page-error">{error}</div>}
 

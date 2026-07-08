@@ -6,12 +6,19 @@ import { useNavigate } from 'react-router-dom';
 
 type EmployeeListProps = {
   employees: Employee[];
-  isAdmin?: boolean;
+  canEdit?: boolean;
+  canDelete?: boolean;
   onEdit?: (employee: Employee) => void;
   onDelete?: (id: string) => void;
 };
 
-function EmployeeList({ employees, isAdmin = false, onEdit, onDelete }: EmployeeListProps) {
+function EmployeeList({
+  employees,
+  canEdit = false,
+  canDelete = false,
+  onEdit,
+  onDelete,
+}: EmployeeListProps) {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5;
@@ -38,7 +45,7 @@ function EmployeeList({ employees, isAdmin = false, onEdit, onDelete }: Employee
               <th>Department</th>
               <th>Designation</th>
               <th>Status</th>
-              {isAdmin && <th className="table-actions">Actions</th>}
+              {(canEdit || canDelete) && <th className="table-actions">Actions</th>}
             </tr>
           </thead>
           <tbody>
@@ -65,20 +72,24 @@ function EmployeeList({ employees, isAdmin = false, onEdit, onDelete }: Employee
                     {employee.status}
                   </span>
                 </td>
-                {isAdmin && (
+                {(canEdit || canDelete) && (
                   <td className="table-actions">
                     <div className="action-buttons">
-                      <Button
-                        text="Edit"
-                        onClick={() => onEdit?.(employee)}
-                        type="button"
-                      />
-                      <Button
-                        text="Delete"
-                        onClick={() => handleDelete(employee)}
-                        type="button"
-                        variant="danger"
-                      />
+                      {canEdit && (
+                        <Button
+                          text="Edit"
+                          onClick={() => onEdit?.(employee)}
+                          type="button"
+                        />
+                      )}
+                      {canDelete && (
+                        <Button
+                          text="Delete"
+                          onClick={() => handleDelete(employee)}
+                          type="button"
+                          variant="danger"
+                        />
+                      )}
                     </div>
                   </td>
                 )}

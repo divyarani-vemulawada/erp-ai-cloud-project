@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, useContext } from 'react';
 import MainLayout from '../layout/Mainlayout';
+import { AuthContext } from '../context/AuthContext';
 import { toast } from 'sonner';
 import Button from '../components/common/Button';
 import Card from '../components/common/Card';
@@ -24,6 +25,10 @@ const emptyForm = {
 };
 
 function Finance() {
+  const auth = useContext(AuthContext);
+  const role = auth?.user?.role || '';
+  const canWrite = ['admin', 'finance_manager'].includes(role);
+
   const [transactions, setTransactions] = useState<FinanceTransaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -102,7 +107,7 @@ function Finance() {
       <div className="module-page">
         <div className="page-header">
           <h1>Finance Management</h1>
-          {!showForm && <Button text="Add Transaction" onClick={() => setShowForm(true)} />}
+          {!showForm && canWrite && <Button text="Add Transaction" onClick={() => setShowForm(true)} />}
         </div>
 
         {error && <div className="page-error">{error}</div>}
@@ -177,7 +182,7 @@ function Finance() {
                 <table className="table">
                   <thead>
                     <tr>
-                      <th>Reference</th><th>Type</th><th>Account</th><th>Counterparty</th><th>Amount</th><th>Status</th><th>Actions</th>
+                      <th>Reference</th><th>Type</th><th>Account</th><th>Counterparty</th><th>Amount</th><th>Status</th>{canWrite && <th>Actions</th>}
                     </tr>
                   </thead>
                   <tbody>
@@ -185,7 +190,7 @@ function Finance() {
                       <tr key={item.id}>
                         <td>{item.reference}</td><td>{item.type}</td><td>{item.account}</td><td>{item.counterparty}</td>
                         <td>{item.amount.toLocaleString()} {item.currency}</td><td><span className={`status-pill status-${item.status.toLowerCase().replace(/\s+/g, '-')}`}>{item.status}</span></td>
-                        <td><Button text="Delete" variant="danger" onClick={() => handleDelete(item.id)} /></td>
+                        {canWrite && <td><Button text="Delete" variant="danger" onClick={() => handleDelete(item.id)} /></td>}
                       </tr>
                     ))}
                   </tbody>

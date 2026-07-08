@@ -17,7 +17,9 @@ import { AuthContext } from '../../context/AuthContext';
 
 function Employees() {
   const auth = useContext(AuthContext);
-  const isAdmin = auth?.user?.role === 'admin';
+  const role = auth?.user?.role || '';
+  const canAddEdit = ['admin', 'hr_manager'].includes(role);
+  const canDelete = role === 'admin';
 
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [orgDepartments, setOrgDepartments] = useState<OrgDepartment[]>([]);
@@ -96,7 +98,7 @@ function Employees() {
       <div className="employees-page">
         <div className="page-header">
           <h1>Human Resources</h1>
-          {isAdmin && !showForm && (
+          {canAddEdit && !showForm && (
             <Button text="Add Employee" onClick={handleAddClick} type="button" />
           )}
         </div>
@@ -119,7 +121,8 @@ function Employees() {
           <>
             <EmployeeList
               employees={employees}
-              isAdmin={isAdmin}
+              canEdit={canAddEdit}
+              canDelete={canDelete}
               onEdit={handleEditClick}
               onDelete={handleDeleteClick}
             />
