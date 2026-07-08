@@ -10,6 +10,8 @@ export interface IFinanceTransaction extends Document {
   status: "Draft" | "Pending" | "Approved" | "Paid";
   transactionDate: string;
   description?: string;
+  debitAccount?: string;
+  creditAccount?: string;
 }
 
 const FinanceTransactionSchema = new Schema(
@@ -31,6 +33,8 @@ const FinanceTransactionSchema = new Schema(
     },
     transactionDate: { type: String, required: true },
     description: { type: String },
+    debitAccount: { type: String },
+    creditAccount: { type: String },
   },
   { timestamps: true, toJSON: { virtuals: true } }
 );

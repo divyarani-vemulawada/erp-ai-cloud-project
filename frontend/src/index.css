@@ -1407,4 +1407,445 @@ body {
 .amdox-toaster [data-sonner-toast] [data-close-button]:hover {
   background: #f1f5f9 !important;
   color: #1e293b !important;
+}
+
+/* ── Transitions for Theme Switch ──────────────────────────────────── */
+html, body, .layout, .sidebar, .navbar, .card, .table-wrapper, .table, .table td, .table th, .search-box input, .input, .profile, .nav-icon-wrap, .nav-dropdown, .dropdown-item, .profile-item, .profile-header, h1, h2, h3, h4, p, span, li, a, label, select, input, button {
+  transition: background-color 0.3s ease, background 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ── Theme Toggle Button ───────────────────────────────────────────── */
+.theme-toggle-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  width: 36px;
+  height: 36px;
+  color: #64748b;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+}
+
+.theme-toggle-btn:hover {
+  background: #f8fafc;
+  color: #6366f1;
+}
+
+.theme-toggle-icon {
+  font-size: 18px;
+  position: absolute;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+}
+
+/* Light mode icon orientations */
+.theme-toggle-btn .sun-icon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+.theme-toggle-btn .moon-icon {
+  opacity: 0;
+  transform: rotate(90deg) scale(0);
+}
+
+/* Dark mode icon orientations */
+.dark .theme-toggle-btn .sun-icon {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0);
+}
+.dark .theme-toggle-btn .moon-icon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+/* Button pulse animation when clicked */
+@keyframes pulse-ring {
+  0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+  50% { transform: scale(1.05); box-shadow: 0 0 0 8px rgba(99, 102, 241, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+}
+
+.theme-toggle-btn:active {
+  animation: pulse-ring 0.3s ease-out;
+}
+
+/* ── Dark Mode Overrides ───────────────────────────────────────────── */
+.dark body {
+  background: #1c1e22;
+  color: #ffffff;
+}
+
+.dark .layout {
+  background: #1c1e22;
+  border: 1px solid #232529;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+}
+
+.dark .sidebar {
+  background: #131417;
+  border-right: 1px solid #232529;
+  color: #ffffff;
+}
+
+.dark .logo-section {
+  border-bottom: 1px solid #232529;
+}
+
+.dark .subtitle {
+  color: #8a8f9b;
+}
+
+.dark .sidebar a {
+  color: #8a8f9b;
+}
+
+.dark .sidebar a:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+}
+
+.dark .sidebar a.active {
+  background: #18191b;
+  color: #ffffff;
+  border: 1px solid #3e424c;
+}
+
+.dark .nav-group-toggle {
+  color: #8a8f9b;
+}
+
+.dark .nav-group-toggle:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+}
+
+.dark .nav-sub a {
+  color: #8a8f9b;
+}
+
+.dark .nav-sub a:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+}
+
+.dark .navbar {
+  background: rgba(19, 20, 23, 0.95);
+  border-bottom: 1px solid #232529;
+}
+
+.dark .menu-icon,
+.dark .nav-icon {
+  color: #8a8f9b;
+}
+
+.dark .menu-icon:hover,
+.dark .nav-icon:hover {
+  color: #ffffff;
+}
+
+.dark .nav-icon-wrap:hover {
+  background: #18191b;
+}
+
+.dark .search-box input {
+  background: #0f1012;
+  border-color: #232529;
+  color: #ffffff;
+}
+
+.dark .search-box input:focus {
+  border-color: #ffffff;
+  background: #0f1012;
+}
+
+.dark .profile:hover {
+  background: #18191b;
+}
+
+.dark .profile h4 {
+  color: #ffffff;
+}
+
+.dark .profile p {
+  color: #8a8f9b;
+}
+
+.dark .profile-img {
+  border-color: #232529;
+}
+
+.dark .nav-dropdown {
+  background: #131417;
+  border-color: #232529;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+}
+
+.dark .dropdown-header {
+  color: #8a8f9b;
+  border-bottom: 1px solid #232529;
+}
+
+.dark .dropdown-item {
+  border-bottom: 1px solid #1c1e22;
+}
+
+.dark .dropdown-item:hover {
+  background: #18191b;
+}
+
+.dark .dropdown-item.unread {
+  background: #18191b;
+}
+
+.dark .item-main {
+  color: #ffffff;
+}
+
+.dark .item-sub {
+  color: #8a8f9b;
+}
+
+.dark .profile-header {
+  background: linear-gradient(135deg, #18191b, #131417);
+  border-bottom: 1px solid #232529;
+}
+
+.dark .profile-header strong {
+  color: #ffffff;
+}
+
+.dark .profile-header p {
+  color: #8a8f9b;
+}
+
+.dark .profile-item {
+  color: #8a8f9b;
+}
+
+.dark .profile-item:hover {
+  background: #18191b;
+  color: #ffffff;
+}
+
+.dark .theme-toggle-btn:hover {
+  background: #18191b;
+  color: #ffffff;
+}
+
+.dark .page-header h1,
+.dark .page-header h2 {
+  color: #ffffff;
+}
+
+.dark .card {
+  background: #131417;
+  border-color: #232529;
+  color: #ffffff;
+}
+
+.dark .table-wrapper {
+  background: #131417;
+  border-color: #232529;
+}
+
+.dark .table {
+  background: #131417;
+}
+
+.dark .table th {
+  background: #18191b;
+  color: #ffffff;
+  border-bottom: 1px solid #232529;
+}
+
+.dark .table td {
+  border-bottom: 1px solid #1c1e22;
+  color: #8a8f9b;
+}
+
+.dark .table tr:hover td {
+  background: #18191b;
+}
+
+.dark .table td span[style*="pointer"] {
+  color: #ffffff !important;
+  text-decoration: underline;
+}
+
+.dark .table td span[style*="pointer"]:hover {
+  color: #cbd5e1 !important;
+}
+
+.dark .modal {
+  background: #131417;
+  border-color: #232529;
+}
+
+.dark .modal h2 {
+  color: #ffffff;
+}
+
+.dark .input {
+  background: #0f1012;
+  border-color: #232529;
+  color: #ffffff;
+}
+
+.dark .input:focus {
+  background: #0f1012;
+  border-color: #ffffff;
+}
+
+.dark .form-group label {
+  color: #8a8f9b;
+}
+
+.dark .form-select {
+  background: #0f1012;
+  border-color: #232529;
+  color: #ffffff;
+}
+
+.dark .form-select:focus {
+  background: #0f1012;
+  border-color: #ffffff;
+}
+
+.dark .employee-form,
+.dark .attendance-form,
+.dark .leave-form,
+.dark .payroll-form {
+  background: #131417;
+  border-color: #232529;
+}
+
+.dark .employee-form > .card,
+.dark .attendance-form > .card,
+.dark .leave-form > .card,
+.dark .payroll-form > .card {
+  border-bottom: 1px solid #232529;
+}
+
+/* ── Dark Mode Bento Grid Overrides ────────────────────────────────── */
+.dark .bento-card {
+  background: #131417;
+  border-color: #232529;
+  color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.dark .bento-card::before {
+  display: none !important;
+}
+
+.dark .bento-card:hover {
+  border-color: #3e424c;
+  box-shadow: 0 12px 32px rgba(255, 255, 255, 0.05);
+}
+
+.dark .bento-value {
+  color: #ffffff;
+}
+
+.dark .bento-chart-title {
+  color: #ffffff;
+}
+
+.dark .bento-icon-wrapper {
+  background: #18191b;
+  color: #8a8f9b;
+  border-color: #232529;
+}
+
+.dark .bento-card:hover .bento-icon-wrapper {
+  background: #ffffff;
+  color: #131417;
+  border-color: transparent;
+}
+
+.dark .bento-chart-header {
+  border-bottom: 1px solid #232529;
+}
+
+.dark .bento-label {
+  color: #8a8f9b;
+}
+
+/* ── Dark Mode HR & Pagination Overrides ────────────────────────────── */
+.dark .employee-list,
+.dark .attendance-tracker,
+.dark .leave-management,
+.dark .payroll-dashboard {
+  background: #131417;
+  border-color: #232529;
+}
+
+.dark .employee-list > .card,
+.dark .attendance-tracker > .card,
+.dark .leave-management > .card,
+.dark .payroll-dashboard > .card {
+  border-bottom: 1px solid #232529;
+}
+
+.dark .pagination {
+  background: #0f1012;
+}
+
+.dark .pagination-btn {
+  color: #8a8f9b;
+}
+
+.dark .pagination-btn:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+}
+
+.dark .pagination-btn.active {
+  background: #ffffff;
+  color: #131417;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+}
+
+.dark .pagination-btn:disabled {
+  opacity: 0.2;
+}
+
+/* ── Dark Mode Status Pill Colors ──────────────────────────────────── */
+.dark .status-pill.status-active,
+.dark .status-pill.status-paid,
+.dark .status-pill.status-approved,
+.dark .status-pill.status-in-stock,
+.dark .status-pill.status-delivered,
+.dark .status-pill.status-on-time,
+.dark .status-pill.status-present,
+.dark .status-pill.status-completed {
+  background: rgba(16, 185, 129, 0.1);
+  color: #34d399;
+}
+
+.dark .status-pill.status-pending,
+.dark .status-pill.status-draft,
+.dark .status-pill.status-low-stock,
+.dark .status-pill.status-sent,
+.dark .status-pill.status-planning {
+  background: rgba(245, 158, 11, 0.1);
+  color: #fbbf24;
+}
+
+.dark .status-pill.status-inactive,
+.dark .status-pill.status-rejected,
+.dark .status-pill.status-out-of-stock,
+.dark .status-pill.status-delayed,
+.dark .status-pill.status-at-risk,
+.dark .status-pill.status-absent,
+.dark .status-pill.status-critical,
+.dark .status-pill.status-unread {
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
 }

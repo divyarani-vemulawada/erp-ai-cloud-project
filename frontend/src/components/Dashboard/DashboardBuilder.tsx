@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaTrash, FaPlus, FaSave, FaTimes, FaGripVertical, FaUndo } from "react-icons/fa";
 import { toast } from "sonner";
+import { useTheme } from "../../context/ThemeContext";
 import WidgetLibrary from "./WidgetLibrary";
 
 interface WidgetLayoutItem {
@@ -22,6 +23,9 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
   onSave,
   onCancel,
 }) => {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
   const [layout, setLayout] = useState<WidgetLayoutItem[]>(
     [...initialLayout].sort((a, b) => a.order - b.order)
   );
@@ -56,7 +60,6 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, index: number) => {
     setDraggedIndex(index);
     e.dataTransfer.effectAllowed = "move";
-    // Set a ghost image or drag data for compatibility
     e.dataTransfer.setData("text/plain", String(index));
   };
 
@@ -116,24 +119,30 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
 
   const currentWidgetTypes = layout.map((w) => w.type);
 
+  // Dynamic Theme Colors
+  const containerBg = isDark ? "#131417" : "#f8fafc";
+  const containerBorder = isDark ? "2px dashed #232529" : "2px dashed #cbd5e1";
+  const headingColor = isDark ? "#ffffff" : "#0f172a";
+  const subheadingColor = isDark ? "#8a8f9b" : "#64748b";
+
   return (
-    <div style={{ padding: "24px", background: "#f8fafc", borderRadius: "16px", border: "2px dashed #cbd5e1", marginBottom: "30px" }}>
+    <div style={{ padding: "24px", background: containerBg, borderRadius: "16px", border: containerBorder, marginBottom: "30px" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px", marginBottom: "24px" }}>
         <div>
-          <h3 style={{ margin: 0, fontSize: "18px", fontWeight: 800, color: "#0f172a" }}>Customize Workspace Layout</h3>
-          <p style={{ margin: "4px 0 0 0", fontSize: "12px", color: "#64748b", fontWeight: 500 }}>
+          <h3 style={{ margin: 0, fontSize: "18px", fontWeight: 800, color: headingColor }}>Customize Workspace Layout</h3>
+          <p style={{ margin: "4px 0 0 0", fontSize: "12px", color: subheadingColor, fontWeight: 500 }}>
             Drag and drop widgets to reorder. Adjust width sizes below. Changes persist securely in the cloud.
           </p>
         </div>
         
         <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-          <button className="btn" style={{ background: "#8b5cf6", gap: "6px", minHeight: "38px" }} onClick={handleResetDefault}>
+          <button className="btn" style={{ background: isDark ? "#18191b" : "#8b5cf6", border: isDark ? "1px solid #232529" : "none", color: "#ffffff", gap: "6px", minHeight: "38px" }} onClick={handleResetDefault}>
             <FaUndo style={{ marginRight: "4px" }} /> Reset to Default
           </button>
-          <button className="btn" style={{ background: "#4f46e5", gap: "6px", minHeight: "38px" }} onClick={() => setShowLibrary(true)}>
+          <button className="btn" style={{ background: isDark ? "#ffffff" : "#4f46e5", color: isDark ? "#131417" : "#ffffff", gap: "6px", minHeight: "38px" }} onClick={() => setShowLibrary(true)}>
             <FaPlus style={{ marginRight: "4px" }} /> Add Widget
           </button>
-          <button className="btn" style={{ gap: "6px", minHeight: "38px" }} onClick={() => onSave(layout)}>
+          <button className="btn" style={{ background: isDark ? "#ffffff" : "#4f46e5", color: isDark ? "#131417" : "#ffffff", gap: "6px", minHeight: "38px" }} onClick={() => onSave(layout)}>
             <FaSave style={{ marginRight: "4px" }} /> Save Layout
           </button>
           <button className="btn btn-danger" style={{ gap: "6px", minHeight: "38px" }} onClick={onCancel}>
@@ -148,6 +157,21 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
           const isDragOver = dragOverIndex === index;
           const span = getGridSpanClass(widget.size);
 
+          const cardBg = isDragging 
+            ? (isDark ? "#1c1e22" : "#f1f5f9") 
+            : (isDark ? "#0f1012" : "white");
+            
+          const cardBorder = isDragOver 
+            ? "2.5px dashed #10b981" 
+            : isDragging 
+              ? (isDark ? "2.5px dashed #232529" : "2.5px dashed #cbd5e1") 
+              : (isDark ? "1.5px solid #232529" : "1.5px solid #e2e8f0");
+
+          const cardTextColor = isDark ? "#ffffff" : "#0f172a";
+          const cardLabelColor = isDark ? "#8a8f9b" : "#475569";
+          const cardSubtextColor = isDark ? "#8a8f9b" : "#64748b";
+          const cardDividerColor = isDark ? "1px solid #1c1e22" : "1px solid #f1f5f9";
+
           return (
             <div 
               key={widget.id} 
@@ -158,15 +182,11 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
               onDrop={(e) => handleDrop(e, index)}
               onDragEnd={handleDragEnd}
               style={{ 
-                border: isDragOver 
-                  ? "2.5px dashed #10b981" 
-                  : isDragging 
-                    ? "2.5px dashed #cbd5e1" 
-                    : "1.5px solid #e2e8f0", 
+                border: cardBorder, 
                 boxShadow: isDragging 
                   ? "none" 
                   : "0 10px 15px -3px rgba(0, 0, 0, 0.05)",
-                background: isDragging ? "#f1f5f9" : "white",
+                background: cardBg,
                 opacity: isDragging ? 0.5 : 1,
                 cursor: "grab",
                 position: "relative",
@@ -186,10 +206,10 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
                       <FaGripVertical />
                     </div>
                     <div>
-                      <span style={{ fontSize: "9px", fontWeight: 800, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                      <span style={{ fontSize: "9px", fontWeight: 800, color: cardSubtextColor, textTransform: "uppercase", letterSpacing: "0.5px" }}>
                         WIDGET #{index + 1}
                       </span>
-                      <h4 style={{ margin: "2px 0 0 0", fontSize: "14px", fontWeight: 700, color: "#0f172a", wordBreak: "break-word" }}>
+                      <h4 style={{ margin: "2px 0 0 0", fontSize: "14px", fontWeight: 700, color: cardTextColor, wordBreak: "break-word" }}>
                         {widget.title}
                       </h4>
                     </div>
@@ -209,39 +229,48 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
 
                 {/* Size Controls */}
                 <div style={{ marginTop: "18px" }}>
-                  <div style={{ fontSize: "11px", fontWeight: 600, color: "#475569", marginBottom: "6px" }}>Width Allocation:</div>
+                  <div style={{ fontSize: "11px", fontWeight: 600, color: cardLabelColor, marginBottom: "6px" }}>Width Allocation:</div>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
-                    {(["small", "medium", "large", "full"] as const).map((sz) => (
-                      <button
-                        key={sz}
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleResize(widget.id, sz);
-                        }}
-                        style={{
-                          padding: "5px 10px",
-                          fontSize: "10px",
-                          fontWeight: 700,
-                          borderRadius: "6px",
-                          border: "1px solid #cbd5e1",
-                          cursor: "pointer",
-                          background: widget.size === sz ? "#6366f1" : "white",
-                          color: widget.size === sz ? "white" : "#475569",
-                          transition: "all 0.15s ease",
-                          flex: "1 0 auto",
-                          textAlign: "center"
-                        }}
-                      >
-                        {sz.toUpperCase()}
-                      </button>
-                    ))}
+                    {(["small", "medium", "large", "full"] as const).map((sz) => {
+                      const isActive = widget.size === sz;
+                      const activeBtnBg = isDark ? "#ffffff" : "#6366f1";
+                      const activeBtnColor = isDark ? "#131417" : "white";
+                      const inactiveBtnBg = isDark ? "#18191b" : "white";
+                      const inactiveBtnColor = isDark ? "#8a8f9b" : "#475569";
+                      const btnBorderColor = isDark ? "1px solid #232529" : "1px solid #cbd5e1";
+
+                      return (
+                        <button
+                          key={sz}
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleResize(widget.id, sz);
+                          }}
+                          style={{
+                            padding: "5px 10px",
+                            fontSize: "10px",
+                            fontWeight: 700,
+                            borderRadius: "6px",
+                            border: btnBorderColor,
+                            cursor: "pointer",
+                            background: isActive ? activeBtnBg : inactiveBtnBg,
+                            color: isActive ? activeBtnColor : inactiveBtnColor,
+                            transition: "all 0.15s ease",
+                            flex: "1 0 auto",
+                            textAlign: "center"
+                          }}
+                        >
+                          {sz.toUpperCase()}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
 
               {/* Bottom Row showing Widget Type details */}
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid #f1f5f9", paddingTop: "12px", marginTop: "14px", fontSize: "11px", color: "#64748b" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: cardDividerColor, paddingTop: "12px", marginTop: "14px", fontSize: "11px", color: cardSubtextColor }}>
                 <span>Type: <code>{widget.type}</code></span>
                 <span style={{ fontWeight: 600, color: "#94a3b8" }}>Drag to reorder</span>
               </div>

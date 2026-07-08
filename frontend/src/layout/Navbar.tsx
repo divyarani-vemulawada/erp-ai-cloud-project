@@ -1,9 +1,10 @@
-import { FaBell, FaEnvelope, FaSearch, FaBars } from "react-icons/fa";
+import { FaBell, FaEnvelope, FaSearch, FaBars, FaSun, FaMoon } from "react-icons/fa";
 import { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { getEmployees } from "../services/hrService";
 import { useSidebar } from "../context/SidebarContext";
+import { useTheme } from "../context/ThemeContext";
 
 const notifications = [
   { id: 1, text: "New leave request from Arjun Reddy", time: "5 min ago", read: false },
@@ -21,6 +22,7 @@ function Navbar() {
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
   const { toggleSidebar, toggleProfile } = useSidebar();
+  const { theme, toggleTheme } = useTheme();
 
   const [query, setQuery] = useState("");
   const [allEmployees, setAllEmployees] = useState<any[]>([]);
@@ -174,6 +176,17 @@ function Navbar() {
             </div>
           )}
         </div>
+
+        {/* Dark Mode Toggle */}
+        <button 
+          className="theme-toggle-btn" 
+          onClick={toggleTheme} 
+          aria-label="Toggle theme"
+          title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+        >
+          <FaSun className="theme-toggle-icon sun-icon" />
+          <FaMoon className="theme-toggle-icon moon-icon" />
+        </button>
 
         {/* Profile */}
         <div 

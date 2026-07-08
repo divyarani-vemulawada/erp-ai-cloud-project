@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import MainLayout from "../layout/Mainlayout";
 import { toast } from "sonner";
+import { useTheme } from "../context/ThemeContext";
 import { getReportSummary } from "../services/reportService";
 import { getInventoryItems } from "../services/supplyChainService";
 import { getProjects } from "../services/projectService";
@@ -40,6 +41,13 @@ import DashboardBuilder from "../components/Dashboard/DashboardBuilder";
 function Dashboard() {
   const auth = useContext(AuthContext);
   const user = auth?.user;
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+  const gridStroke = isDark ? "#232529" : "#f1f5f9";
+  const axisStroke = isDark ? "#5a5f6c" : "#94a3b8";
+  const tooltipBg = isDark ? "#131417" : "white";
+  const tooltipBorder = isDark ? "#232529" : "#e2e8f0";
+  const tooltipColor = isDark ? "#ffffff" : "#1e293b";
 
   const [summary, setSummary] = useState<ReportSummary | null>(null);
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
@@ -103,9 +111,9 @@ function Dashboard() {
   const absent = Math.max(0, totalEmp - present - onLeave);
 
   const attendancePieData = [
-    { name: "Present Today", value: present, color: "#10b981" },
-    { name: "On Leave", value: onLeave, color: "#f59e0b" },
-    { name: "Absent", value: absent, color: "#ef4444" },
+    { name: "Present Today", value: present, color: isDark ? "#ffffff" : "#10b981" },
+    { name: "On Leave", value: onLeave, color: isDark ? "#8a8f9b" : "#f59e0b" },
+    { name: "Absent", value: absent, color: isDark ? "#3e424c" : "#ef4444" },
   ].filter((item) => item.value > 0);
 
   const getGridSpanClass = (size: "small" | "medium" | "large" | "full") => {
@@ -233,7 +241,7 @@ function Dashboard() {
             <div className="bento-chart-header">
               <div className="bento-chart-title">{widget.title}</div>
             </div>
-            <BarChart data={inventoryChartData} xKey="name" yKey="stock" yName="Current Stock" color="#6366f1" height={220} />
+            <BarChart data={inventoryChartData} xKey="name" yKey="stock" yName="Current Stock" color={isDark ? "#ffffff" : "#6366f1"} height={220} />
           </div>
         );
       case "financeChart":
@@ -242,7 +250,7 @@ function Dashboard() {
             <div className="bento-chart-header">
               <div className="bento-chart-title">{widget.title}</div>
             </div>
-            <BarChart data={financeChartData} xKey="name" yKey="amount" yName="Ledger Balance (INR)" color="#8b5cf6" height={220} />
+            <BarChart data={financeChartData} xKey="name" yKey="amount" yName="Ledger Balance (INR)" color={isDark ? "#8a8f9b" : "#8b5cf6"} height={220} />
           </div>
         );
       case "attendancePie":
@@ -266,27 +274,27 @@ function Dashboard() {
                 <AreaChart data={projectChartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                   <defs>
                     <linearGradient id="colorProgress" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#6366f1" stopOpacity={0.8} />
-                      <stop offset="95%" stopColor="#6366f1" stopOpacity={0.05} />
+                      <stop offset="5%" stopColor={isDark ? "#ffffff" : "#6366f1"} stopOpacity={0.8} />
+                      <stop offset="95%" stopColor={isDark ? "#ffffff" : "#6366f1"} stopOpacity={0.05} />
                     </linearGradient>
                     <linearGradient id="colorSpend" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.8} />
-                      <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0.05} />
+                      <stop offset="5%" stopColor={isDark ? "#8a8f9b" : "#8b5cf6"} stopOpacity={0.8} />
+                      <stop offset="95%" stopColor={isDark ? "#8a8f9b" : "#8b5cf6"} stopOpacity={0.05} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                  <XAxis dataKey="name" stroke="#94a3b8" fontSize={11} />
-                  <YAxis stroke="#94a3b8" fontSize={11} />
+                  <CartesianGrid strokeDasharray="3 3" stroke={gridStroke} />
+                  <XAxis dataKey="name" stroke={axisStroke} fontSize={11} />
+                  <YAxis stroke={axisStroke} fontSize={11} />
                   <Tooltip
                     formatter={(value, name) => {
                       if (name === "Progress %") return [`${value}%`, name];
                       return [`₹${(Number(value) * 10000).toLocaleString()}`, name === "Budget" ? "Total Budget" : "Actual Spend"];
                     }}
-                    contentStyle={{ background: "white", border: "1px solid #e2e8f0", borderRadius: "8px" }}
+                    contentStyle={{ background: tooltipBg, border: `1px solid ${tooltipBorder}`, borderRadius: "8px", color: tooltipColor }}
                   />
                   <Legend />
-                  <Area type="monotone" dataKey="progress" name="Progress %" stroke="#6366f1" fillOpacity={1} fill="url(#colorProgress)" />
-                  <Area type="monotone" dataKey="actualSpend" name="Actual Spend (in 10k INR)" stroke="#8b5cf6" fillOpacity={1} fill="url(#colorSpend)" />
+                  <Area type="monotone" dataKey="progress" name="Progress %" stroke={isDark ? "#ffffff" : "#6366f1"} fillOpacity={1} fill="url(#colorProgress)" />
+                  <Area type="monotone" dataKey="actualSpend" name="Actual Spend (in 10k INR)" stroke={isDark ? "#8a8f9b" : "#8b5cf6"} fillOpacity={1} fill="url(#colorSpend)" />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
@@ -328,7 +336,7 @@ function Dashboard() {
             <h1 style={{ fontSize: "28px", fontWeight: 800, color: "#6366f1", letterSpacing: "-0.02em" }}>
               Dashboard
             </h1>
-            <p style={{ color: "#64748b", margin: "6px 0 0 0", fontSize: "14px", fontWeight: 500 }}>
+            <p style={{ color: isDark ? "#cbd5e1" : "#64748b", margin: "6px 0 0 0", fontSize: "14px", fontWeight: 500 }}>
               Real-time multi-tenant monitoring for <strong>{user?.name || "User"}</strong> ({user?.role})
             </p>
           </div>

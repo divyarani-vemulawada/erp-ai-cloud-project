@@ -1,5 +1,6 @@
 import React from "react";
 import { FaPlus } from "react-icons/fa";
+import { useTheme } from "../../context/ThemeContext";
 
 interface WidgetLibraryProps {
   onAddWidget: (type: string, title: string, size: "small" | "medium" | "large" | "full") => void;
@@ -26,11 +27,25 @@ export const WidgetLibrary: React.FC<WidgetLibraryProps> = ({
   onClose,
   currentWidgetTypes,
 }) => {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
+  // Dynamic Theme Colors
+  const titleColor = isDark ? "#ffffff" : "#0f172a";
+  const textColor = isDark ? "#8a8f9b" : "#64748b";
+  const badgeBg = isDark ? "#18191b" : "#e2e8f0";
+  const badgeColor = isDark ? "#ffffff" : "#475569";
+  const libraryCardBg = (isAdded: boolean) => 
+    isAdded 
+      ? (isDark ? "#18191b" : "#f8fafc") 
+      : (isDark ? "#0f1012" : "white");
+  const cardBorder = isDark ? "1.5px solid #232529" : "1.5px solid #e2e8f0";
+
   return (
     <div className="modal-overlay" style={{ zIndex: 1100 }}>
       <div className="modal" style={{ width: "600px", maxWidth: "90%", maxHeight: "85vh", display: "flex", flexDirection: "column", padding: "24px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-          <h2 style={{ margin: 0, fontSize: "20px", fontWeight: 800, color: "#0f172a" }}>Widget Library</h2>
+          <h2 style={{ margin: 0, fontSize: "20px", fontWeight: 800, color: titleColor }}>Widget Library</h2>
           <button className="btn btn-danger" style={{ minHeight: "34px", padding: "0 12px", fontSize: "12px" }} onClick={onClose}>Close</button>
         </div>
         
@@ -41,31 +56,39 @@ export const WidgetLibrary: React.FC<WidgetLibraryProps> = ({
               <div 
                 key={widget.type} 
                 style={{ 
-                  border: "1.5px solid #e2e8f0", 
+                  border: cardBorder, 
                   borderRadius: "12px", 
                   padding: "16px", 
                   display: "flex", 
                   flexDirection: "column", 
                   justifyContent: "space-between",
-                  background: isAdded ? "#f8fafc" : "white",
+                  background: libraryCardBg(isAdded),
                   opacity: isAdded ? 0.75 : 1,
                   transition: "all 0.2s ease"
                 }}
               >
                 <div>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
-                    <strong style={{ fontSize: "14px", color: "#0f172a" }}>{widget.title}</strong>
-                    <span style={{ fontSize: "10px", padding: "2px 8px", borderRadius: "10px", background: "#e2e8f0", fontWeight: 700, color: "#475569", textTransform: "capitalize" }}>
+                    <strong style={{ fontSize: "14px", color: titleColor }}>{widget.title}</strong>
+                    <span style={{ fontSize: "10px", padding: "2px 8px", borderRadius: "10px", background: badgeBg, fontWeight: 700, color: badgeColor, textTransform: "capitalize" }}>
                       {widget.size}
                     </span>
                   </div>
-                  <p style={{ fontSize: "12px", color: "#64748b", margin: "0 0 16px 0", lineHeight: "1.4" }}>{widget.desc}</p>
+                  <p style={{ fontSize: "12px", color: textColor, margin: "0 0 16px 0", lineHeight: "1.4" }}>{widget.desc}</p>
                 </div>
                 
                 <button 
                   className="btn" 
                   disabled={isAdded}
-                  style={{ width: "100%", minHeight: "36px", fontSize: "12px", gap: "6px" }}
+                  style={{
+                    width: "100%",
+                    minHeight: "36px",
+                    fontSize: "12px",
+                    gap: "6px",
+                    background: isAdded ? (isDark ? "#1c1e22" : "#e2e8f0") : (isDark ? "#ffffff" : "#6366f1"),
+                    color: isAdded ? (isDark ? "#5a5f6c" : "#94a3b8") : (isDark ? "#131417" : "white"),
+                    border: isDark && !isAdded ? "none" : "1px solid transparent"
+                  }}
                   onClick={() => onAddWidget(widget.type, widget.title, widget.size)}
                 >
                   <FaPlus /> {isAdded ? "Added to Dashboard" : "Add Widget"}

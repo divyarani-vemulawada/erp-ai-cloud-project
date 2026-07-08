@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTheme } from "../../context/ThemeContext";
 
 interface HeatmapChartProps {
   title?: string;
@@ -8,6 +9,8 @@ interface HeatmapChartProps {
 export const HeatmapChart: React.FC<HeatmapChartProps> = ({
   title = "Resource Utilization / Activity Heatmap",
 }) => {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   const hours = ["08 AM", "10 AM", "12 PM", "02 PM", "04 PM", "06 PM", "08 PM"];
 
@@ -30,26 +33,33 @@ export const HeatmapChart: React.FC<HeatmapChartProps> = ({
   const [hoveredCell, setHoveredCell] = useState<{ day: string; hour: string; val: number } | null>(null);
 
   const getBgColor = (val: number) => {
-    if (val < 25) return "rgba(99, 102, 241, 0.15)";
-    if (val < 50) return "rgba(99, 102, 241, 0.4)";
-    if (val < 75) return "rgba(99, 102, 241, 0.65)";
-    return "rgba(99, 102, 241, 0.9)";
+    if (val < 25) return isDark ? "rgba(255, 255, 255, 0.08)" : "rgba(99, 102, 241, 0.15)";
+    if (val < 50) return isDark ? "rgba(255, 255, 255, 0.2)" : "rgba(99, 102, 241, 0.4)";
+    if (val < 75) return isDark ? "rgba(255, 255, 255, 0.45)" : "rgba(99, 102, 241, 0.65)";
+    return isDark ? "rgba(255, 255, 255, 0.8)" : "rgba(99, 102, 241, 0.9)";
   };
+
+  const titleColor = isDark ? "#ffffff" : "#475569";
+  const labelColor = isDark ? "#8a8f9b" : "#64748b";
+  const tooltipBg = isDark ? "#131417" : "#f1f5f9";
+  const tooltipBorder = isDark ? "1px solid #232529" : "none";
+  const tooltipTextColor = isDark ? "#ffffff" : "#1e293b";
+  const hoverBorderColor = isDark ? "#ffffff" : "#0f172a";
 
   return (
     <div style={{ padding: "10px", fontFamily: "'Inter', sans-serif" }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "16px", alignItems: "center" }}>
-        <h4 style={{ fontSize: "13px", fontWeight: 700, color: "#475569" }}>{title}</h4>
+        <h4 style={{ fontSize: "13px", fontWeight: 700, color: titleColor }}>{title}</h4>
         {hoveredCell && (
-          <div style={{ fontSize: "11px", color: "#1e293b", fontWeight: 700, background: "#f1f5f9", padding: "4px 8px", borderRadius: "6px" }}>
-            {hoveredCell.day} at {hoveredCell.hour} &rarr; <strong>{hoveredCell.val}% Utilized</strong>
+          <div style={{ fontSize: "11px", color: tooltipTextColor, fontWeight: 700, background: tooltipBg, border: tooltipBorder, padding: "4px 8px", borderRadius: "6px" }}>
+            {hoveredCell.day} at {hoveredCell.hour} &rarr; <strong style={{ color: isDark ? "#ffffff" : "#4f46e5" }}>{hoveredCell.val}% Utilized</strong>
           </div>
         )}
       </div>
 
       <div style={{ display: "flex", gap: "8px" }}>
         {/* Day labels column */}
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "160px", padding: "4px 0", fontSize: "11px", fontWeight: 700, color: "#64748b", width: "30px" }}>
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "160px", padding: "4px 0", fontSize: "11px", fontWeight: 700, color: labelColor, width: "30px" }}>
           {days.map((day) => (
             <div key={day} style={{ textAlign: "right", paddingRight: "6px" }}>{day}</div>
           ))}
@@ -70,7 +80,7 @@ export const HeatmapChart: React.FC<HeatmapChartProps> = ({
                      borderRadius: "4px",
                      cursor: "pointer",
                      transition: "all 0.15s ease",
-                     border: hoveredCell?.day === days[dIndex] && hoveredCell?.hour === hours[hIndex] ? "1.5px solid #0f172a" : "none",
+                     border: hoveredCell?.day === days[dIndex] && hoveredCell?.hour === hours[hIndex] ? `1.5px solid ${hoverBorderColor}` : "none",
                    }}
                 />
               ))}
@@ -78,7 +88,7 @@ export const HeatmapChart: React.FC<HeatmapChartProps> = ({
           ))}
 
           {/* Hour labels row */}
-          <div style={{ display: "flex", justifyContent: "space-between", marginTop: "6px", fontSize: "11px", fontWeight: 700, color: "#64748b" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", marginTop: "6px", fontSize: "11px", fontWeight: 700, color: labelColor }}>
             {hours.map((hour) => (
               <div key={hour} style={{ flex: 1, textAlign: "center" }}>{hour}</div>
             ))}

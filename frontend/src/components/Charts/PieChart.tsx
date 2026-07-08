@@ -7,6 +7,7 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import { useTheme } from "../../context/ThemeContext";
 
 interface PieChartProps {
   data: { name: string; value: number; color?: string }[];
@@ -21,6 +22,12 @@ export const PieChart: React.FC<PieChartProps> = ({
   colors = DEFAULT_COLORS,
   height = 300,
 }) => {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+  const tooltipBg = isDark ? "#131417" : "white";
+  const tooltipBorder = isDark ? "#232529" : "#e2e8f0";
+  const tooltipColor = isDark ? "#ffffff" : "#1e293b";
+
   return (
     <div style={{ width: "100%", height }}>
       <ResponsiveContainer width="100%" height="100%">
@@ -38,7 +45,9 @@ export const PieChart: React.FC<PieChartProps> = ({
               <Cell key={`cell-${index}`} fill={entry.color || colors[index % colors.length]} />
             ))}
           </Pie>
-          <Tooltip />
+          <Tooltip
+            contentStyle={{ background: tooltipBg, border: `1px solid ${tooltipBorder}`, borderRadius: "8px", fontSize: "12px", color: tooltipColor }}
+          />
           <Legend wrapperStyle={{ fontSize: "12px" }} />
         </RechartsPieChart>
       </ResponsiveContainer>
